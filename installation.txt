@@ -1,0 +1,6 @@
+Instalacion de node modules:
+- express
+- sequelize 
+- mysql2 
+- body-parser
+- cors
