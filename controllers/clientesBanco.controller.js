@@ -1,10 +1,10 @@
-var service = require("../services/clienteBanco.service.js");
+var clienteBancoService = require("../services/clienteBanco.service.js");
 
 exports.checkdb = (req, res) => {
     const usuario = req.params.usuario;
     const contraseña = req.params.contraseña;
 
-    mensaje = service.findOne(usuario, contraseña);
+    mensaje = clienteBancoService.findOne(usuario, contraseña);
     if (mensaje == "success") {
         res.send(mensaje);
     } else {
