@@ -12,5 +12,4 @@ exports.checkdb = (req, res) => {
             message: mensaje
         });
     }
-
 }

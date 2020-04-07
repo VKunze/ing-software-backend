@@ -19,7 +19,7 @@ exports.findOne = (usuario, contraseña) => {
             return "success";
         })
         .catch(err => {
-            return "Error retrieving usuario";
+            return "error";
         });
 };
 
