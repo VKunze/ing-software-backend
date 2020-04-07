@@ -13,5 +13,4 @@ exports.checkdb = async (req, res) => {
             message: 'Internal server error'
         });
     }
-
 }
