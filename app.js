@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const clientesBancoRouter = require('./routes/clientesBanco.routes')
 var app = express();
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    // origin: "http://localhost:8081"
 };
 
 app.use(cors(corsOptions));
@@ -18,13 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./db/index.js");
 db.sequelize.sync();
-
-// simple route
-app.get("/", (req, res) => {
-    res.json({ message: "Welcome to app." });
-  });
-
-require("./app/routes/clientesBanco.routes")(app);
+app.use(clientesBancoRouter)
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
