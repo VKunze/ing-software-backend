@@ -1,15 +1,17 @@
-module.exports = app => {
-    const clientesBanco = require("../controllers/clientesBanco.controller.js");
-   
-    const express = require('express');
-   
-    clientesBancoRouter = express.Router();
+const clientesBanco = require("../controllers/clientesBanco.controller");
+const express = require('express');
 
-    module.exports = clientesBancoRouter;
+router = express.Router();
+// simple route
+router.post("/", (req, res) => {
+  res.json({ message: "Welcome to app." });
+});
+router.post("/login", clientesBanco.checkdb);
+
+module.exports = router;
 
   
   // Verify user
-  clientesBancoRouter.get("/", clientesBanco.checkdb);
 /*
   // Create a new Tutorial
   clientesBancoRouter.post("/", clientesBanco.create);
@@ -35,5 +37,4 @@ module.exports = app => {
   app.use('/db/clientesBanco.db.js', clientesBancoRouter);
 
 */
-};
 
