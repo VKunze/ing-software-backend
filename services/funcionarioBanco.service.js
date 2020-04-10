@@ -1,5 +1,5 @@
 const db = require("../db/index.js");
-const ClienteBanco = db.clienteBanco;
+const FuncionarioBanco = db.funcionarioBanco;
 const Op = db.Sequelize.Op;
 
 /* // Create and Save a new Tutorial
@@ -14,7 +14,7 @@ exports.findAll = (req, res) => {
 
 // Find a single usuario and contraseña
 exports.findOne = (usuario, contraseña) => {
-    return ClienteBanco.findOne({ where: { usuario: usuario, contraseña: contraseña } })
+    return FuncionarioBanco.findOne({ where: { usuario: usuario, contraseña: contraseña } })
         .then(data => {
             return data;
         })

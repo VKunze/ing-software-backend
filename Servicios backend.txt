@@ -1,0 +1,9 @@
+Para guardar los datos de la solicitud en la bdd:
+Pasar un JSON, con las siguientes caracteristicas:
+	producto
+	nombre
+	apellido
+	cedula
+	direccion
+	sueldo
+	direccionEntrega

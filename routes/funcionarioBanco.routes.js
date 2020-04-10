@@ -1,4 +1,4 @@
-const clientesBanco = require("../controllers/clientesBanco.controller");
+const funcionarioBanco = require("../controllers/funcionarioBanco.controller");
 const express = require('express');
 
 router = express.Router();
@@ -6,7 +6,7 @@ router = express.Router();
 router.post("/", (req, res) => {
   res.json({ message: "Welcome to app." });
 });
-router.post("/login", clientesBanco.checkdb);
+router.post("/login", funcionarioBanco.checkdb);
 
 module.exports = router;
 
