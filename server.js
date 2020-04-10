@@ -26,9 +26,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // const db = require("./db/index.js");
 // db.sequelize.sync();
-app.use(funcionarioBancoRouter);
-app.use(solicitudesRouter);
-app.use(productosRouter);
+// app.use(funcionarioBancoRouter);
+// app.use(solicitudesRouter);
+// app.use(productosRouter);
 
 // // set port, listen for requests
 const PORT = process.env.PORT || 8080;
