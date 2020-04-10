@@ -1,8 +1,9 @@
 var funcionarioBancoService = require("../services/funcionarioBanco.service.js");
 
 exports.checkdb = async (req, res) => {
-    const usuario = req.body.username;
-    const contraseña = req.body.password;
+    console.log(req);
+    const usuario = req.query.username;
+    const contraseña = req.query.password;
     if (usuario == undefined || contraseña == undefined) {
         res.status(500).send({
             message: 'Incorrect data'
