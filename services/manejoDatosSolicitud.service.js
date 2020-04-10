@@ -5,23 +5,52 @@ const Estado = db.estado;
 const Op = db.Sequelize.Op;
 
 exports.guardarDatos = (jsonDatos) => {
-    var datosSolicitud = JSON.parse(jsonDatos);
-    const idProductoAsociado = Producto.findOne({ where: { nombre: datosSolicitud.producto } })
+    try {
+        var datosSolicitud = JSON.parse(jsonDatos);
+    } catch (e) {
+        return (e);
+    }
+    var idEstadoAprobacionAsociado = "";
+    var idProductoAsociado = "";
+    Producto.findOne({ where: { nombre: datosSolicitud.producto } })
         .then(data => {
-            return data.id;
-        })
-        .catch(err => {
-            throw err;
-        });
-    const idEstadoAprobacionAsociado = Estado.findOne({ where: { nombre: "estado inicial" } })
-        .then(data => {
-            return data.id;
-        })
-        .catch(err => {
-            throw err;
-        });
+            idProductoAsociado = data.id;
+            Estado.findOne({ where: { nombre: "esperando aprobacion" } })
+                .then(data1 => {
+                    idEstadoAprobacionAsociado = data1.id;
+                    console.log(idEstadoAprobacionAsociado);
+                    console.log(idProductoAsociado);
+                    const solicitudBdd = {
+                        productoId: idProductoAsociado,
+                        //fechaSolicitud: new Date(), //current date
+                        estadoId: idEstadoAprobacionAsociado,
+                        nombrePersona: datosSolicitud.nombre,
+                        apellidoPersona: datosSolicitud.apellido,
+                        cedulaPersona: datosSolicitud.cedula,
+                        direccionPersona: datosSolicitud.direccion,
+                        sueldoPersona: datosSolicitud.sueldo,
+                        direccionEntrega: datosSolicitud.direccionEntrega,
+                    }
 
-    const solicitudBdd = {
+                    Solicitud.create(solicitudBdd).then(data => {
+                        return data;
+                    }).catch(err => {
+                        console.log("Hubo un error con crear la solicitud");
+                        return "error";
+                    });
+                })
+                .catch(err => {
+                    throw err;
+                });
+
+            //return data.id;
+        })
+        .catch(err => {
+            throw err;
+        });
+    return "ok";
+
+    /* const solicitudBdd = {
         productoId: idProductoAsociado,
         fechaSolicitud: new Date(), //current date
         estadoAprobacionId: idEstadoAprobacionAsociado,
@@ -33,9 +62,9 @@ exports.guardarDatos = (jsonDatos) => {
         direccionEntrega: datosSolicitud.direccionEntrega,
     }
 
-    return Solicitud.create(solicitudBdd).then(data => {
+    Solicitud.create(solicitudBdd).then(data => {
         return data;
     }).catch(err => {
         return "error";
-    });
+    }); */
 }

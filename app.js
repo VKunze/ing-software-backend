@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const funcionarioBancoRouter = require('./routes/funcionarioBanco.routes')
+const funcionarioBancoRouter = require('./routes/funcionarioBanco.routes');
+const solicitudesRouter = require("./routes/solicitudes.routes");
 var app = express();
 
 var corsOptions = {
@@ -18,7 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./db/index.js");
 db.sequelize.sync();
-app.use(funcionarioBancoRouter)
+app.use(funcionarioBancoRouter);
+app.use(solicitudesRouter);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
