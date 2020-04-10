@@ -13,11 +13,6 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.get("/", function(req,res){
-  res.status(200).send("Deployed");
-} );
-
-
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 

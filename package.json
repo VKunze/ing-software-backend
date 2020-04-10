@@ -8,7 +8,6 @@
     "npm": "6.12.1"
   },
   "scripts": {
-    "build": "concurrently \"cd client && npm run build\" \"npm build \"",
     "dev": "nodemon server.js",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
