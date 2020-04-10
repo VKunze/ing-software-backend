@@ -6,7 +6,6 @@ exports.checkdb = async (req, res) => {
 
     const userFromDb = await funcionarioBancoService.findOne(usuario, contraseña);
     if (userFromDb) {
-        console.log('USUARIO DE LA DB:', userFromDb.id)
         res.status(200).send({message:'Ok'});
     } else {
         res.status(500).send({
