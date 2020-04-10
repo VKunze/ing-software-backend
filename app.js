@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./db/index.js");
-db.sequelize.sync();
+// db.sequelize.sync();
 app.use(funcionarioBancoRouter);
 app.use(solicitudesRouter);
 app.use(productosRouter);
