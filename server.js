@@ -6,13 +6,17 @@ const solicitudesRouter = require("./routes/solicitudes.routes");
 const productosRouter = require("./routes/productos.routes");
 var app = express();
 require("dotenv").config();
-require("./routes")(app);
 
 var corsOptions = {
     // origin: "http://localhost:8081"
 };
 
 app.use(cors(corsOptions));
+
+app.get("/", function(req,res){
+  res.status(200).send("Deployed");
+} );
+
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
