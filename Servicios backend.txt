@@ -1,5 +1,15 @@
+Login:
+tipo de request: POST
+ruta: "/login"
+parametros a pasar: 
+- body.username
+- body.password
+
 Para guardar los datos de la solicitud en la bdd:
-Pasar un JSON, con las siguientes caracteristicas:
+tipo de request: POST
+ruta: "/enviarSolicitud"
+parametros a pasar: (como query params, bajo el nombre "solicitud")
+- Un JSON, con las siguientes caracteristicas:
 	producto
 	nombre
 	apellido

@@ -8,7 +8,8 @@ exports.guardarDatos = (jsonDatos) => {
     try {
         var datosSolicitud = JSON.parse(jsonDatos);
     } catch (e) {
-        return (e);
+        throw e;
+        return "error";
     }
     var idEstadoAprobacionAsociado = "";
     var idProductoAsociado = "";
@@ -18,8 +19,8 @@ exports.guardarDatos = (jsonDatos) => {
             Estado.findOne({ where: { nombre: "esperando aprobacion" } })
                 .then(data1 => {
                     idEstadoAprobacionAsociado = data1.id;
-                    console.log(idEstadoAprobacionAsociado);
-                    console.log(idProductoAsociado);
+                    //console.log(idEstadoAprobacionAsociado);
+                    //console.log(idProductoAsociado);
                     const solicitudBdd = {
                         productoId: idProductoAsociado,
                         //fechaSolicitud: new Date(), //current date
@@ -40,13 +41,13 @@ exports.guardarDatos = (jsonDatos) => {
                     });
                 })
                 .catch(err => {
-                    throw err;
+                    return "error";
                 });
 
             //return data.id;
         })
         .catch(err => {
-            throw err;
+            return "error";
         });
     return "ok";
 
