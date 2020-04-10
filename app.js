@@ -6,6 +6,7 @@ const solicitudesRouter = require("./routes/solicitudes.routes");
 const productosRouter = require("./routes/productos.routes");
 var app = express();
 require("dotenv").config();
+require("./routes")(app);
 
 var corsOptions = {
     // origin: "http://localhost:8081"
