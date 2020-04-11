@@ -2,70 +2,48 @@ const db = require("../db/index.js");
 const Solicitud = db.solicitud;
 const Producto = db.producto;
 const Estado = db.estado;
-const Op = db.Sequelize.Op;
 
-exports.guardarDatos = (jsonDatos) => {
+exports.guardarDatos = async (datosSolicitud) => {
     try {
-        var datosSolicitud = JSON.parse(jsonDatos);
-    } catch (e) {
-        throw e;
-        return "error";
+        console.log(datosSolicitud);
+        const solicitudBdd = {
+            productoId: await getIdProducto(datosSolicitud.producto),
+            estadoId: await getIdEstadoInicial(),
+            nombrePersona: datosSolicitud.nombre,
+            apellidoPersona: datosSolicitud.apellido,
+            cedulaPersona: datosSolicitud.cedula,
+            direccionPersona: datosSolicitud.direccion,
+            sueldoPersona: datosSolicitud.sueldo,
+            direccionEntrega: datosSolicitud.direccionEntrega,
+        }
+        //Crear la solicitud en la bdd
+        Solicitud.create(solicitudBdd)
+            .then(data => {
+                return data
+            });
+    } catch (err) {
+        throw err;
     }
-    var idEstadoAprobacionAsociado = "";
-    var idProductoAsociado = "";
-    Producto.findOne({ where: { nombre: datosSolicitud.producto } })
+
+
+}
+
+function getIdProducto(nombreProducto) {
+    return Producto.findOne({ where: { nombre: nombreProducto } })
         .then(data => {
-            idProductoAsociado = data.id;
-            Estado.findOne({ where: { nombre: "esperando aprobacion" } })
-                .then(data1 => {
-                    idEstadoAprobacionAsociado = data1.id;
-                    //console.log(idEstadoAprobacionAsociado);
-                    //console.log(idProductoAsociado);
-                    const solicitudBdd = {
-                        productoId: idProductoAsociado,
-                        //fechaSolicitud: new Date(), //current date
-                        estadoId: idEstadoAprobacionAsociado,
-                        nombrePersona: datosSolicitud.nombre,
-                        apellidoPersona: datosSolicitud.apellido,
-                        cedulaPersona: datosSolicitud.cedula,
-                        direccionPersona: datosSolicitud.direccion,
-                        sueldoPersona: datosSolicitud.sueldo,
-                        direccionEntrega: datosSolicitud.direccionEntrega,
-                    }
-
-                    Solicitud.create(solicitudBdd).then(data => {
-                        return data;
-                    }).catch(err => {
-                        console.log("Hubo un error con crear la solicitud");
-                        return "error";
-                    });
-                })
-                .catch(err => {
-                    return "error";
-                });
-
-            //return data.id;
+            return data.id;
         })
         .catch(err => {
             return "error";
         });
-    return "ok";
+}
 
-    /* const solicitudBdd = {
-        productoId: idProductoAsociado,
-        fechaSolicitud: new Date(), //current date
-        estadoAprobacionId: idEstadoAprobacionAsociado,
-        nombrePersona: datosSolicitud.nombre,
-        apellidoPersona: datosSolicitud.apellido,
-        cedulaPersona: datosSolicitud.cedula,
-        direccionPersona: datosSolicitud.direccion,
-        sueldoPersona: datosSolicitud.sueldo,
-        direccionEntrega: datosSolicitud.direccionEntrega,
-    }
-
-    Solicitud.create(solicitudBdd).then(data => {
-        return data;
-    }).catch(err => {
-        return "error";
-    }); */
+function getIdEstadoInicial() {
+    return Estado.findOne({ where: { nombre: "esperando aprobacion" } })
+        .then(data => {
+            return data.id;
+        })
+        .catch(err => {
+            return "error";
+        });
 }

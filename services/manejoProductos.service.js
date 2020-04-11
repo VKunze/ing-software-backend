@@ -6,6 +6,6 @@ exports.getProductos = () => {
     return Producto.findAll().then(data => {
         return data;
     }).catch(err => {
-        return "error";
+        throw err;
     });
 }
