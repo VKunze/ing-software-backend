@@ -16,7 +16,6 @@ exports.findAll = (req, res) => {
 exports.findOne = (usuario, contraseña) => {
     return FuncionarioBanco.findOne({ where: { usuario: usuario, contraseña:contraseña } })
         .then(data => {
-          console.log(data)
             return data
         })
         .catch(err => {
