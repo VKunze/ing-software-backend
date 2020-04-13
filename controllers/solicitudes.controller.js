@@ -32,3 +32,27 @@ exports.generarSolicitud = async (req, res) => {
         });
     }
 }
+
+exports.compararFotos = async (req, res) => {
+    try {
+        const fotoCedula = req.body.fotoCedula;
+        const fotoSelfie = req.body.fotoSelfie;
+        if (!fotoCedula || !fotoSelfie) {
+            res.status(400).send({
+                success: false,
+                code: 'BAD_REQUEST',
+                message: 'Ingrese una foto de la cedula y una selfie'
+            });
+        }
+        const respuesta = await manejoDatosSolicitud.compararFotos(fotoCedula, fotoSelfie);
+        res.status(200).send({
+            success: true
+        });
+    } catch (e) {
+        res.status(500).send({
+            success: false,
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Ha ocurrido un error inesperado, intente de nuevo mas tarde!'
+        });
+    }
+}

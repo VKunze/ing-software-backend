@@ -6,11 +6,12 @@ parametros a pasar:
 - body.password
 respuesta: "ok" si todo funcionó bien
 
+Productos:
 Obtener los productos posibles:
 tipo de request: GET
 ruta: "/getProducts"
 parametros a pasar: -
-respuesta: productos en formato JSON
+respuesta: productos (nombre, descripcion corta e imagen) en formato JSON
 
 Para guardar los datos de la solicitud en la bdd:
 tipo de request: POST

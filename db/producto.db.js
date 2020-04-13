@@ -5,11 +5,19 @@ module.exports = (sequelize, Sequelize) => {
       nombre: {
         type: Sequelize.STRING
       },
+      descripcion: {
+        type: Sequelize.STRING
+      },
+      descripcionCorta: {
+        type: Sequelize.STRING
+      },
+      imagen: {
+        type: Sequelize.BLOB('long')
+      },
       sueldoMinimo: {
         type: Sequelize.INTEGER
       }
     });
-  
     //Producto.hasMany(Solicitud);
     return Producto;
   };
