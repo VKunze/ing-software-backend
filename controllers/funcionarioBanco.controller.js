@@ -1,5 +1,5 @@
 var funcionarioBancoService = require("../services/funcionarioBanco.service.js");
-var helpers = require('./utils.helpers.js');
+var helpers = require('../utils/helpers.js');
 
 exports.checkdb = async (req, res) => {
   try {

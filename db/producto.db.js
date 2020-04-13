@@ -18,6 +18,5 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER
       }
     });
-    //Producto.hasMany(Solicitud);
     return Producto;
   };
