@@ -24,8 +24,16 @@ exports.guardarDatos = async (datosSolicitud) => {
     } catch (err) {
         throw err;
     }
+}
 
-
+exports.compararFotos = async (fotoCedula, fotoSelfie) => {
+    try {
+        console.log(fotoCedula);
+        console.log(fotoSelfie);
+        return "ok";
+    } catch (err) {
+        throw err;
+    }
 }
 
 function getIdProducto(nombreProducto) {
