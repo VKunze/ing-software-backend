@@ -12,7 +12,6 @@ exports.checkdb = async (req, res) => {
       });
     }
     const userFromDb = await funcionarioBancoService.findOne(usuario, contraseña);
-    console.log("resultado: "+ userFromDb);
     if (!userFromDb) {
       res.status(400).send({
         success: false,

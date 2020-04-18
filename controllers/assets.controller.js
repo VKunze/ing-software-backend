@@ -2,6 +2,7 @@ exports.handleAssets = async (req, res) => {
   try {
     const {idCardPicture , cameraPicture} = req.body;
     if (!idCardPicture || !cameraPicture) {
+      console.log('FOTOS', {idCardPicture , cameraPicture})
       res.status(400).send({
         success: false,
         code: 'BAD_REQUEST',

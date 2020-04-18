@@ -5,10 +5,10 @@ const Op = db.Sequelize.Op;
 
 // Find a single usuario and contraseña
 exports.findOne = async (usuario, contraseña) => {
-    const contraseñaHasheada = await hashContraseña(contraseña);
+    // const contraseñaHasheada = await hashContraseña(contraseña);
     return FuncionarioBanco.findOne({ where: { usuario: usuario } })
         .then(data => {
-            return bcrypt.compare(data.contraseña, contraseñaHasheada, function (err, res) {
+            return bcrypt.compare(contraseña, data.contraseña, function (err, res) {
                 if (res) {
                     return data;
                 } else {
