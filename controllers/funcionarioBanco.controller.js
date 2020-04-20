@@ -1,5 +1,5 @@
 var funcionarioBancoService = require("../services/funcionarioBanco.service.js");
-var helpers = require('./utils.helpers.js');
+var helpers = require('../utils/helpers.js');
 
 exports.checkdb = async (req, res) => {
   try {
@@ -26,7 +26,7 @@ exports.checkdb = async (req, res) => {
           usuario: usuario,
           contraseña: contraseña
         },
-        'secretproyectkey', '60m', usuario
+        'secretprojectkey'//, '60m', usuario
       );
       res.status(200).send({
         success: true,
