@@ -2,7 +2,7 @@ const solicitudes = require("../controllers/solicitudes.controller");
 const express = require('express');
 
 router = express.Router();
-router.post("/enviarSolicitud", solicitudes.generarSolicitud);
-router.post("/enviarFotos", solicitudes.compararFotos);
+router.post("/enviarSolicitude", solicitudes.generarSolicitude);
+router.post("/enviarFotos", solicitudes.compareFotos);
 
 module.exports = router;

@@ -11,16 +11,16 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.funcionarioBanco = require("./funcionarioBanco.db.js")(sequelize, Sequelize);
-db.estado = require("./estados.db.js")(sequelize, Sequelize);
-db.producto = require("./producto.db.js")(sequelize, Sequelize);
-db.solicitud = require("./solicitud.db.js")(sequelize, Sequelize);
+db.bankWorker = require("./bankWorker.db.js")(sequelize, Sequelize);
+db.state = require("./states.db.js")(sequelize, Sequelize);
+db.product = require("./product.db.js")(sequelize, Sequelize);
+db.solicitude = require("./solicitude.db.js")(sequelize, Sequelize);
 
 // Relationships between tables
-db.producto.hasMany(db.solicitud);
-db.solicitud.belongsTo(db.producto);
+db.product.hasMany(db.solicitude);
+db.solicitude.belongsTo(db.product);
 
-db.estado.hasMany(db.solicitud);
-db.solicitud.belongsTo(db.estado);
+db.state.hasMany(db.solicitude);
+db.solicitude.belongsTo(db.state);
 
 module.exports = db;
