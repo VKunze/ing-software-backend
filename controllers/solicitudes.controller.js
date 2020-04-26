@@ -1,26 +1,26 @@
-var manejoDatosSolicitud = require("../services/manejoDatosSolicitud.service.js");
+var manejoDatosSolicitude = require("../services/solicitude.service.js");
 
-exports.generarSolicitud = async (req, res) => {
+exports.generarSolicitude = async (req, res) => {
     try {
-        const solicitudJson = req.body.solicitud;
-        if (!solicitudJson) {
+        const solicitudeJson = req.body.solicitude;
+        if (!solicitudeJson) {
             res.status(400).send({
                 success: false,
                 code: 'BAD_REQUEST',
-                message: 'Ingrese una solicitud'
+                message: 'Ingrese una solicitude'
             });
         }
-        var datosSolicitud = "";
+        var datosSolicitude = "";
         try {
-            datosSolicitud = JSON.parse(solicitudJson);
+            datosSolicitude = JSON.parse(solicitudeJson);
         } catch (err) {
             res.status(400).send({
                 success: false,
                 code: 'BAD_REQUEST',
-                message: 'La solicitud ingresada debe estar en formato JSON'
+                message: 'The solicitude has to be in JSON formatting'
             });
         }
-        const respuesta = await manejoDatosSolicitud.guardarDatos(datosSolicitud);
+        const respuesta = await manejoDatosSolicitude.guardarDatos(datosSolicitude);
         res.status(200).send({
             success: true
         });
@@ -33,7 +33,7 @@ exports.generarSolicitud = async (req, res) => {
     }
 }
 
-exports.compararFotos = async (req, res) => {
+exports.compareFotos = async (req, res) => {
     try {
         const fotoCedula = req.body.fotoCedula;
         const fotoSelfie = req.body.fotoSelfie;
@@ -44,7 +44,8 @@ exports.compararFotos = async (req, res) => {
                 message: 'Ingrese una foto de la cedula y una selfie'
             });
         }
-        const respuesta = await manejoDatosSolicitud.compararFotos(fotoCedula, fotoSelfie);
+        console.log("pre llamar funcion");
+        const resultOfComparison = await manejoDatosSolicitude.compareFotos(fotoCedula, fotoSelfie);
         res.status(200).send({
             success: true
         });

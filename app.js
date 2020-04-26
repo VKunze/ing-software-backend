@@ -1,10 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
+
+
 const db = require("./db/index.js");
-const funcionarioBancoRouter = require('./routes/funcionarioBanco.routes');
+const bankWorkerRouter = require('./routes/bankWorker.routes');
 const solicitudesRouter = require("./routes/solicitudes.routes");
-const productosRouter = require("./routes/productos.routes");
+const productosRouter = require("./routes/products.routes");
 const assetsRoutes = require("./routes/assets.routes");
 
 var app = express();
@@ -15,7 +18,7 @@ app.use(bodyParser.json({ limit: '50mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
 db.sequelize.sync();
-app.use(funcionarioBancoRouter);
+app.use(bankWorkerRouter);
 app.use(solicitudesRouter);
 app.use(productosRouter);
 app.use(assetsRoutes);
