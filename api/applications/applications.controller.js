@@ -35,6 +35,7 @@ exports.generarSolicitude = async (req, res) => {
 
 exports.compareFotos = async (req, res) => {
     try {
+        const userId = req.headers.userId
         const fotoCedula = req.body.fotoCedula;
         const fotoSelfie = req.body.fotoSelfie;
         if (!fotoCedula || !fotoSelfie) {
@@ -45,7 +46,7 @@ exports.compareFotos = async (req, res) => {
             });
         }
         console.log("pre llamar funcion");
-        const resultOfComparison = await applicationsService.compareFotos(fotoCedula, fotoSelfie);
+        const resultOfComparison = await applicationsService.compareFotos(userId, fotoCedula, fotoSelfie);
         res.status(200).send({
             success: true
         });

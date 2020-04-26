@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+var base64Img = require('base64-img');
 const db = require("../../db/index.js");
 const Solicitude = db.solicitude;
 const Producto = db.producto;
@@ -27,9 +28,14 @@ exports.guardarDatos = async (datosSolicitude) => {
     }
 }
 
-exports.compareFotos = async (fotoCedula, fotoSelfie) => {
+exports.compareFotos = async (userId, base64Ci, base64User) => {
     try {
       var dataToSend;
+
+      var ciImage = base64Img.imgSync(base64Ci, '../../onApplication', `${userId}_ci_card_picture`);
+      var userImage = base64Img.imgSync(base64User, '../../onApplication', `${userId}_camera_picture`);
+      // images to send to python script
+
       const python = spawn('python', ['../../utils/comparator.py']);
       
       python.stdout.on('data', function (data) {
