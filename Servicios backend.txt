@@ -1,23 +1,29 @@
 Login:
 tipo de request: POST
 ruta: "/login"
-parametros a pasar: 
-- body.username
-- body.password
-respuesta: "ok" si todo funcionó bien
+parametros a pasar en el body: 
+- username
+- password
 
 Productos:
-Obtener los productos posibles:
+1. Obtener los productos posibles:
 tipo de request: GET
 ruta: "/getProducts"
 parametros a pasar: -
 respuesta: productos (nombre, descripcion corta e imagen) en formato JSON
 
+2. Obtener detalles de un producto:
+tipo de request: GET
+ruta: "getProductDetails"
+parametros a pasar: 
+- productName
+respuesta: 
+
 Para guardar los datos de la solicitud en la bdd:
 tipo de request: POST
 ruta: "/enviarSolicitud"
-parametros a pasar: (como query params, bajo el nombre "solicitud")
-- Un JSON, con las siguientes caracteristicas:
+parametros a pasar en el body: 
+- "solicitud": Un JSON, con las siguientes caracteristicas:
 	producto
 	nombre
 	apellido
@@ -25,4 +31,3 @@ parametros a pasar: (como query params, bajo el nombre "solicitud")
 	direccion
 	sueldo
 	direccionEntrega
-respuesta: "ok" si todo funcionó bien
