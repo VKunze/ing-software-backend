@@ -1,9 +1,9 @@
-const solicitudes = require("./applications.controller");
+const applications = require("./applications.controller");
 const express = require('express');
 
 applicationsRouter = express.Router();
 
-applicationsRouter.post("/", solicitudes.generarSolicitude);
-applicationsRouter.post("/assets", solicitudes.compareFotos);
+applicationsRouter.post("/", applications.generateApplication);
+applicationsRouter.post("/assets", applications.compareFotos);
 
 module.exports = applicationsRouter;

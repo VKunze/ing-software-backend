@@ -1,4 +1,4 @@
-const db = require("../../db/index.js");
+const db = require("../../db/models/index.js");
 const bcrypt = require("bcrypt");
 const BankWorker = db.bankWorker;
 const Op = db.Sequelize.Op;

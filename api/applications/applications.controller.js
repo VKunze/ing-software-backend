@@ -1,6 +1,6 @@
 var applicationsService = require("./applications.service.js");
 
-exports.generarSolicitude = async (req, res) => {
+exports.generateApplication = async (req, res) => {
     try {
         const solicitudeJson = req.body.solicitude;
         if (!solicitudeJson) {
@@ -20,7 +20,7 @@ exports.generarSolicitude = async (req, res) => {
                 message: 'The solicitude has to be in JSON formatting'
             });
         }
-        const respuesta = await applicationsService.guardarDatos(datosSolicitude);
+        const respuesta = await applicationsService.save(datosSolicitude);
         res.status(200).send({
             success: true
         });
@@ -35,7 +35,7 @@ exports.generarSolicitude = async (req, res) => {
 
 exports.compareFotos = async (req, res) => {
     try {
-        const userId = req.headers.userId
+        const userId = req.headers.userid
         const fotoCedula = req.body.fotoCedula;
         const fotoSelfie = req.body.fotoSelfie;
         if (!fotoCedula || !fotoSelfie) {
@@ -48,7 +48,8 @@ exports.compareFotos = async (req, res) => {
         console.log("pre llamar funcion");
         const resultOfComparison = await applicationsService.compareFotos(userId, fotoCedula, fotoSelfie);
         res.status(200).send({
-            success: true
+            success: true,
+            result: resultOfComparison
         });
     } catch (e) {
         res.status(500).send({
