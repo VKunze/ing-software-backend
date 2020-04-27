@@ -1,7 +1,7 @@
 //const Solicitud = require("./solicitud.db.js");
 
 module.exports = (sequelize, Sequelize) => {
-    const Product = sequelize.define("product", {
+    const product = sequelize.define("product", {
       name: {
         type: Sequelize.STRING
       },

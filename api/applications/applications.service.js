@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
 var base64Img = require('base64-img');
-const db = require("../../db/index.js");
+const db = require("../../db/models/index.js");
 const Solicitude = db.solicitude;
 const Producto = db.producto;
 const State = db.state;
