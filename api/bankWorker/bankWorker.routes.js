@@ -4,7 +4,7 @@ const middleware = require("../auth/middleware");
 
 bankWorkerRouter = express.Router();
 bankWorkerRouter.post("/login", bankWorkerController.checkdb);
-bankWorkerRouter.post("/createBankWorker", bankWorkerController.create);
+bankWorkerRouter.post("/new", middleware.authenticateToken, bankWorkerController.create);
 
 // To Finish
 bankWorkerRouter.post('/tokenTest', middleware.authenticateToken, ()=>{

@@ -21,12 +21,10 @@ exports.checkdb = async (req, res) => {
         message: "username y/o password incorrectos",
       });
     } else {
-      var token = helpers.generateJWTToken(
-        {
-          username: username,
-          password: password,
-        },
-      );
+      var token = helpers.generateJWTToken({
+        username: username,
+        password: password,
+      });
       await bankWorkerService.saveToken(token, userFromDb.id);
       res.status(200).send({
         success: true,
@@ -38,10 +36,10 @@ exports.checkdb = async (req, res) => {
     res.status(500).send({
       success: false,
       code: "INTERNAL_SERVER_ERROR",
+      message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
     });
   }
 };
-  message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
 
 exports.create = async (req, res) => {
   try {
