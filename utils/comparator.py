@@ -2,7 +2,6 @@ import face_recognition
 import sys
 import os
 
-print(os.getcwd() + sys.argv[1])
 orig_foto = face_recognition.load_image_file(os.getcwd() + sys.argv[1])
 orig_encodings = face_recognition.face_encodings(orig_foto)[0]
 verificacion=False

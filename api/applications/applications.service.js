@@ -29,7 +29,6 @@ exports.save = async (datosSolicitude) => {
 
 exports.compareFotos = async (userId, base64Ci, base64User) => {
   try {
-    var dataToSend;
     var ciImage = base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
     var userImage = base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
     // images to send to python script
@@ -37,11 +36,11 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
                 var ciImage = "\\onApplication\\Tom_Hanks_face.jpg";
                 var userImage = "\\onApplication\\img2.jpg"; */
 
-    console.log(ciImage);
+    console.log("a",ciImage);
     const pythonScriptPromise = async () => {
+      var dataToSend;
       const python = spawn("python", ["./utils/comparator.py",`\\onApplication\\${userId}_ci_card_picture.jpg`,`\\onApplication\\${userId}_camera_picture.jpg`]);
-      new Promise((resolve, reject) => {
-        var dataToSend;
+      return new Promise((resolve, reject) => {
         var error;
         python.stdout.on("data", function (data) {
           console.log("Pipe data from python script ...");
@@ -55,7 +54,6 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
 
         python.on("close", (code) => {
           console.log(`child process close all stdio with code ${code}`);
-          dataToSend = data.toString();
           if (error) {
             reject(error);
           } else {
@@ -66,7 +64,8 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     };
 
     const result = await pythonScriptPromise();
-    console.log(result)
+    console.log("res", result)
+    return result;
   } catch (err) {
     console.log(err);
     throw err;
@@ -91,4 +90,7 @@ function getIdInicialState() {
     .catch((err) => {
       return "error";
     });
-}
+
+
+
+  }
