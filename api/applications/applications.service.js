@@ -6,87 +6,79 @@ const Producto = db.producto;
 const State = db.state;
 
 exports.save = async (datosSolicitude) => {
-  try {
-    console.log(datosSolicitude);
-    const solicitudeBdd = {
-      productoId: await getIdProducto(datosSolicitude.producto),
-      stateId: await getIdInicialState(),
-      nombrePersona: datosSolicitude.nombre,
-      apellidoPersona: datosSolicitude.apellido,
-      cedulaPersona: datosSolicitude.cedula,
-      direccionPersona: datosSolicitude.direccion,
-      sueldoPersona: datosSolicitude.sueldo,
-      direccionEntrega: datosSolicitude.direccionEntrega,
-    };
-    //Create a solicitude in db
-    Solicitude.create(solicitudeBdd).then((data) => {
-      return data;
-    });
-  } catch (err) {
-    throw err;
-  }
+    try {
+        console.log(datosSolicitude);
+        const solicitudeBdd = {
+            productoId: await getIdProducto(datosSolicitude.producto),
+            stateId: await getIdInicialState(),
+            nombrePersona: datosSolicitude.nombre,
+            apellidoPersona: datosSolicitude.apellido,
+            cedulaPersona: datosSolicitude.cedula,
+            direccionPersona: datosSolicitude.direccion,
+            sueldoPersona: datosSolicitude.sueldo,
+            direccionEntrega: datosSolicitude.direccionEntrega,
+        };
+        //Create a solicitude in db
+        Solicitude.create(solicitudeBdd).then((data) => {
+            return data;
+        });
+    } catch (err) {
+        throw err;
+    }
 };
 
 exports.compareFotos = async (userId, base64Ci, base64User) => {
-  try {
-    var dataToSend;
-    /*  try {
-            window.atob(base64Ci);
-        } catch(e) {
-            console.log("wrong img type");
-        } */
-    console.log(userId);
-    console.log("pre conversiones");
-    var ciImage = base64Img.imgSync(base64Ci, "../../onApplication/", `${userId}_ci_card_picture`);
-    var userImage = base64Img.imgSync(
-      base64User,
-      "../../onApplication/",
-      `${userId}_camera_picture`
-    );
-    // images to send to python script
+    try {
+        var dataToSend;
+        var ciImage = base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
+        var userImage = base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
+        // images to send to python script
+        /*
+                var ciImage = "\\onApplication\\Tom_Hanks_face.jpg";
+                var userImage = "\\onApplication\\img2.jpg"; */
 
-    var ciImage = "\\onApplication\\Tom_Hanks_face.jpg";
-    var userImage = "\\onApplication\\img2.jpg";
+        console.log(ciImage);
+        try {
+            const python = spawn("python", ["./utils/comparator.py", `\\onApplication\\${userId}_ci_card_picture.jpg`, `\\onApplication\\${userId}_camera_picture.jpg`]);
+        } catch (err) {
 
-    console.log("pre llamar funcion python");
-    const python = spawn("python", ["./utils/comparator.py", ciImage, userImage]);
+        }
+        python.stdout.on("data", function (data) {
+            console.log("Pipe data from python script ...");
+            dataToSend = data.toString();
+            console.log(dataToSend);
+        });
 
-    python.stdout.on("data", function (data) {
-      console.log("Pipe data from python script ...");
-      dataToSend = data.toString();
-      console.log(dataToSend);
-    });
+        python.stderr.on("data", function (data) {
+            console.log("Error : " + data);
+        });
 
-    python.stderr.on("data", function (data) {
-      console.log("Error : " + data);
-    });
-
-    return python.on("close", (code) => {
-      console.log(`child process close all stdio with code ${code}`);
-      return dataToSend;
-    });
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+        return python.on("close", (code) => {
+            console.log(`child process close all stdio with code ${code}`);
+            return dataToSend;
+        });
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 };
 
 function getIdProducto(nombreProducto) {
-  return Producto.findOne({ where: { nombre: nombreProducto } })
-    .then((data) => {
-      return data.id;
-    })
-    .catch((err) => {
-      return "error";
-    });
+    return Producto.findOne({ where: { nombre: nombreProducto } })
+        .then((data) => {
+            return data.id;
+        })
+        .catch((err) => {
+            return "error";
+        });
 }
 
 function getIdInicialState() {
-  return State.findOne({ where: { nombre: "esperando aprobacion" } })
-    .then((data) => {
-      return data.id;
-    })
-    .catch((err) => {
-      return "error";
-    });
+    return State.findOne({ where: { nombre: "esperando aprobacion" } })
+        .then((data) => {
+            return data.id;
+        })
+        .catch((err) => {
+            return "error";
+        });
 }
