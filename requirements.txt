@@ -1,2 +1,1 @@
-asgiref==3.2.3
-certifi==2019.11.28
+cmake==3.9.6

@@ -52,7 +52,7 @@ exports.compareFotos = async (req, res) => {
         );
         res.status(200).send({
             success: true,
-            result: resultOfComparison,
+            result: resultOfComparison==='True'? true : false,
         });
     } catch (e) {
         res.status(500).send({
