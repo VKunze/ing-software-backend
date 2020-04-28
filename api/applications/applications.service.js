@@ -56,7 +56,7 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
         });
 
         python.stderr.on("data", function (data) {
-          // console.log("Error : " + data);
+          console.log("Error : " + data);
           error = data;
         });
 
