@@ -1,5 +1,5 @@
 var applicationsService = require("./applications.service.js");
-
+  
 exports.generateApplication = async (req, res) => {
     try {
         const solicitudeJson = req.body.solicitude;
@@ -39,26 +39,27 @@ exports.compareFotos = async (req, res) => {
         const fotoCedula = req.body.fotoCedula;
         const fotoSelfie = req.body.fotoSelfie;
         if (!fotoCedula || !fotoSelfie) {
-            res.status(400).send({
-                success: false,
-                code: "BAD_REQUEST",
-                message: "Ingrese una foto de la cedula y una selfie",
-            });
+          res.status(400).send({
+            success: false,
+            code: "BAD_REQUEST",
+            message: "Ingrese una foto de la cedula y una selfie",
+          });
         }
         const resultOfComparison = await applicationsService.compareFotos(
-            userIdCardNumber,
-            fotoCedula,
-            fotoSelfie
+          userIdCardNumber,
+          fotoCedula,
+          fotoSelfie
         );
         res.status(200).send({
-            success: true,
-            result: resultOfComparison,
+          success: true,
+          result: resultOfComparison.includes('True')? true : false,
         });
     } catch (e) {
-        res.status(500).send({
-            success: false,
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
-        });
+      res.status(500).send({
+        success: false,
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        trace: e
+      });
     }
 };
