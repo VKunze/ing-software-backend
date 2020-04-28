@@ -58,11 +58,10 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     };
 
     const result = await pythonScriptPromise();
-    console.log("res", result)
     return result;
   } catch (err) {
     console.log(err);
-    throw err;
+    throw new PhotoComparisonError(err);
   }
 };
 
