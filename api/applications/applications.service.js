@@ -29,14 +29,8 @@ exports.save = async (datosSolicitude) => {
 
 exports.compareFotos = async (userId, base64Ci, base64User) => {
   try {
-    var ciImage = base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
-    var userImage = base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
-    // images to send to python script
-    /*
-                var ciImage = "\\onApplication\\Tom_Hanks_face.jpg";
-                var userImage = "\\onApplication\\img2.jpg"; */
-
-    console.log("a",ciImage);
+    base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
+    base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
     const pythonScriptPromise = async () => {
       var dataToSend;
       const python = spawn("python", ["./utils/comparator.py",`\\onApplication\\${userId}_ci_card_picture.jpg`,`\\onApplication\\${userId}_camera_picture.jpg`]);
