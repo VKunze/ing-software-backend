@@ -35,24 +35,33 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     // base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
     const urlCameraPhoto = await cloudinaryHelper.uploadImage(`${userId}_camera`, base64User);
     const urlCiPhoto = await cloudinaryHelper.uploadImage(`${userId}_ci_card`, base64Ci);
+    console.log(urlCiPhoto);
+    console.log(urlCameraPhoto);
 
     const pythonScriptPromise = async () => {
       var dataToSend;
-      const python = spawn("python", ["./utils/comparator.py", urlCiPhoto, urlCameraPhoto]);
+
+      // must be adapted for linux paths \\ braces are for windows
+      const python = spawn("python", [
+        "./utils/comparator.py",
+        `\\onApplication\\${userId}_ci_card_picture.jpg`,
+        `\\onApplication\\${userId}_camera_picture.jpg`,
+      ]);
+      const python = spawn("python", ["./utils/comparator.py", urlCiPhoto.url, urlCameraPhoto.url]);
       return new Promise((resolve, reject) => {
         var error;
         python.stdout.on("data", function (data) {
-          console.log("Pipe data from python script ...");
+          // console.log("Pipe data from python script ...");
           dataToSend = data.toString();
         });
 
         python.stderr.on("data", function (data) {
-          console.log("Error : " + data);
+          // console.log("Error : " + data);
           error = data;
         });
 
         python.on("close", (code) => {
-          console.log(`child process close all stdio with code ${code}`);
+          // console.log(`child process close all stdio with code ${code}`);
           if (error) {
             reject(error);
           } else {
