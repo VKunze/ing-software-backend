@@ -55,18 +55,11 @@ exports.compareFotos = async (req, res) => {
           result: resultOfComparison.includes('True')? true : false,
         });
     } catch (e) {
-        if (e instanceof PhotoComparisonError) {
-          res.status(400).send({
-            success: false,
-            code: "BAD_REQUEST",
-            message: e.message,
-        });
-        } else {
-          res.status(500).send({
-              success: false,
-              code: "INTERNAL_SERVER_ERROR",
-              message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
-          });
-        }
+      res.status(500).send({
+        success: false,
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        trace: e
+      });
     }
 };

@@ -61,7 +61,7 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     return result;
   } catch (err) {
     console.log(err);
-    throw new PhotoComparisonError(err);
+    throw new Error(err);
   }
 };
 
