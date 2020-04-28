@@ -33,8 +33,10 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
   try {
     // base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
     // base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
+
     const urlCameraPhoto = await cloudinaryHelper.uploadImage(`${userId}_camera`, base64User);
     const urlCiPhoto = await cloudinaryHelper.uploadImage(`${userId}_ci_card`, base64Ci);
+
     console.log(urlCiPhoto.url);
     console.log(urlCameraPhoto.url);
 
@@ -52,7 +54,9 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
         var error;
         python.stdout.on("data", function (data) {
           // console.log("Pipe data from python script ...");
+
           dataToSend = data.toString();
+          console.log(dataToSend);
         });
 
         python.stderr.on("data", function (data) {
