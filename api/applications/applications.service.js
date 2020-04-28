@@ -35,8 +35,9 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     // base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
     const urlCameraPhoto = await cloudinaryHelper.uploadImage(`${userId}_camera`, base64User);
     const urlCiPhoto = await cloudinaryHelper.uploadImage(`${userId}_ci_card`, base64Ci);
-    console.log(urlCiPhoto);
-    console.log(urlCameraPhoto);
+
+    console.log(urlCiPhoto.url);
+    console.log(urlCameraPhoto.url);
 
     const pythonScriptPromise = async () => {
       var dataToSend;
@@ -47,6 +48,7 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
       //   `\\onApplication\\${userId}_ci_card_picture.jpg`,
       //   `\\onApplication\\${userId}_camera_picture.jpg`,
       // ]);
+
       const python = spawn("python", ["./utils/comparator.py", urlCiPhoto.url, urlCameraPhoto.url]);
       return new Promise((resolve, reject) => {
         var error;
