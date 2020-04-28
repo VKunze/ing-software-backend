@@ -11,9 +11,6 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
-app.use(express.static(__dirname ));
-
-
 db.sequelize.sync({force:false});
 app.use('', apiRoutes);
 

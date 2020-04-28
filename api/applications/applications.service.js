@@ -1,8 +1,6 @@
 const { spawn } = require("child_process");
 var base64Img = require("base64-img");
 const db = require("../../db/models/index.js");
-const cloudinaryHelper = require("./../../utils/cloudinary");
-
 const Solicitude = db.solicitude;
 const Producto = db.producto;
 const State = db.state;
@@ -31,27 +29,15 @@ exports.save = async (datosSolicitude) => {
 
 exports.compareFotos = async (userId, base64Ci, base64User) => {
   try {
-    // base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
-    // base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
-    const urlCameraPhoto = await cloudinaryHelper.uploadImage(`${userId}_camera`, base64User);
-    const urlCiPhoto = await cloudinaryHelper.uploadImage(`${userId}_ci_card`, base64Ci);
-    console.log(urlCiPhoto.url);
-    console.log(urlCameraPhoto.url);
-
+    base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
+    base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
     const pythonScriptPromise = async () => {
       var dataToSend;
-
-      // must be adapted for linux paths \\ braces are for windows
-      // const python = spawn("python", [
-      //   "./utils/comparator.py",
-      //   `\\onApplication\\${userId}_ci_card_picture.jpg`,
-      //   `\\onApplication\\${userId}_camera_picture.jpg`,
-      // ]);
-      const python = spawn("python", ["./utils/comparator.py", urlCiPhoto.url, urlCameraPhoto.url]);
+      const python = spawn("python", ["./utils/comparator.py",`\\onApplication\\${userId}_ci_card_picture.jpg`,`\\onApplication\\${userId}_camera_picture.jpg`]);
       return new Promise((resolve, reject) => {
         var error;
         python.stdout.on("data", function (data) {
-          // console.log("Pipe data from python script ...");
+          console.log("Pipe data from python script ...");
           dataToSend = data.toString();
         });
 
@@ -61,7 +47,7 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
         });
 
         python.on("close", (code) => {
-          // console.log(`child process close all stdio with code ${code}`);
+          console.log(`child process close all stdio with code ${code}`);
           if (error) {
             reject(error);
           } else {
@@ -72,10 +58,11 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     };
 
     const result = await pythonScriptPromise();
+    console.log("res", result)
     return result;
   } catch (err) {
     console.log(err);
-    throw new Error(err);
+    throw err;
   }
 };
 
@@ -97,4 +84,7 @@ function getIdInicialState() {
     .catch((err) => {
       return "error";
     });
-}
+
+
+
+  }
