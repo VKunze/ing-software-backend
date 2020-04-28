@@ -1,5 +1,5 @@
 var applicationsService = require("./applications.service.js");
-
+  
 exports.generateApplication = async (req, res) => {
     try {
         const solicitudeJson = req.body.solicitude;

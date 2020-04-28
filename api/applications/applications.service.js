@@ -1,6 +1,8 @@
 const { spawn } = require("child_process");
 var base64Img = require("base64-img");
 const db = require("../../db/models/index.js");
+const cloudinaryHelper = require("./../../utils/cloudinary");
+
 const Solicitude = db.solicitude;
 const Producto = db.producto;
 const State = db.state;
@@ -29,11 +31,14 @@ exports.save = async (datosSolicitude) => {
 
 exports.compareFotos = async (userId, base64Ci, base64User) => {
   try {
-    base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
-    base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
+    // base64Img.imgSync(base64Ci, "./onApplication", `${userId}_ci_card_picture`);
+    // base64Img.imgSync(base64User, "./onApplication", `${userId}_camera_picture`);
+    const urlCameraPhoto = await cloudinaryHelper.uploadImage(`${userId}_camera`, base64User);
+    const urlCiPhoto = await cloudinaryHelper.uploadImage(`${userId}_ci_card`, base64Ci);
+
     const pythonScriptPromise = async () => {
       var dataToSend;
-      const python = spawn("python", ["./utils/comparator.py",`\\onApplication\\${userId}_ci_card_picture.jpg`,`\\onApplication\\${userId}_camera_picture.jpg`]);
+      const python = spawn("python", ["./utils/comparator.py", urlCiPhoto, urlCameraPhoto]);
       return new Promise((resolve, reject) => {
         var error;
         python.stdout.on("data", function (data) {
@@ -83,7 +88,4 @@ function getIdInicialState() {
     .catch((err) => {
       return "error";
     });
-
-
-
-  }
+}
