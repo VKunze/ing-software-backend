@@ -1,4 +1,5 @@
 var applicationsService = require("./applications.service.js");
+const db = require("../../db/models/index.js");
 const Debug = db.debug;
 
 exports.generateApplication = async (req, res) => {
