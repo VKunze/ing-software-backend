@@ -3,8 +3,9 @@ import sys
 import os
 import urllib.request   #para python2 : urllib2
 
-imgCi = urllib.request.urlopen(sys.argv[1])		#urllib2.urlopen(sys.argv[1])
-imgSelfie = urllib.request.urlopen(sys.argv[2]) 	#urllib2.urlopen(sys.argv[2])
+urlCedula = sys.argv[1].replace("jpc", "jpg")
+imgCi = urllib.request.urlopen(urlCedula)		#para python2 : urllib2.urlopen(sys.argv[1])
+imgSelfie = urllib.request.urlopen(sys.argv[2]) 	#para python2 : urllib2.urlopen(sys.argv[2])
 
 orig_foto = face_recognition.load_image_file(imgCi)
 orig_encodings = face_recognition.face_encodings(orig_foto)[0]
