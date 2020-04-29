@@ -33,13 +33,10 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
   try {
     const urlCameraPhoto = await cloudinaryHelper.uploadImage(`${userId}_camera`, base64User);
     const urlCiPhoto = await cloudinaryHelper.uploadImage(`${userId}_ci_card`, base64Ci);
-
-    console.log(urlCiPhoto.url);
-    console.log(urlCameraPhoto.url);
-
+    // console.log(urlCiPhoto.url);
+    // console.log(urlCameraPhoto.url);
     const pythonScriptPromise = async () => {
       var dataToSend;
-
       // must be adapted for linux paths \\ braces are for windows
       // const python = spawn("python", [
       //   "./utils/comparator.py",
@@ -50,19 +47,14 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
       return new Promise((resolve, reject) => {
         var error;
         python.stdout.on("data", function (data) {
-          // console.log("Pipe data from python script ...");
-
-          dataToSend = data.toString();
-          console.log(dataToSend);
+          dataToSend = data;
         });
 
         python.stderr.on("data", function (data) {
-          console.log("Error : " + data);
           error = data;
         });
 
         python.on("close", (code) => {
-          // console.log(`child process close all stdio with code ${code}`);
           if (error) {
             reject(error);
           } else {
@@ -73,6 +65,7 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     };
 
     const result = await pythonScriptPromise();
+    console.log("RESULTADO:", result);
     return result;
   } catch (err) {
     console.log(err);

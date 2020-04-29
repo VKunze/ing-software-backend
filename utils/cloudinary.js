@@ -9,15 +9,16 @@ cloudinary.config({
 
 exports.uploadImage = (id, image) => {
   return new Promise((resolve, reject) => {
-    cloudinary.v2.uploader.upload(`data:image/jpg;base64,${image}`, { public_id: id }, function (
-      error,
-      result
-    ) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
+    cloudinary.v2.uploader.upload(
+      `data:image/jpg;base64,${image}`,
+      { public_id: `${id}_${new Date().toISOString()}` },
+      function (error, result) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 };
