@@ -63,12 +63,10 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
         });
       });
     };
-
     const result = await pythonScriptPromise();
     console.log("RESULTADO:", result);
     return result;
   } catch (err) {
-    console.log(err);
     throw new Error(err);
   }
 };

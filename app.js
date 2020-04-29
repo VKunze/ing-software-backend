@@ -10,7 +10,6 @@ require("dotenv").config();
 app.use(cors());
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-
 app.use(express.static(__dirname));
 
 db.sequelize.sync({ force: false });
