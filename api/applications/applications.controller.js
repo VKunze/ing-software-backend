@@ -52,14 +52,23 @@ exports.compareFotos = async (req, res) => {
       fotoCedula,
       fotoSelfie
     );
-    try {
-      await Debug.create({ log: resultOfComparison.toString() });
-    } catch (error) {}
-    res.status(200).send({
-      success: true,
-      result: resultOfComparison.includes("True") ? true : false,
-    });
+    /*  try {
+       await Debug.create({ log: resultOfComparison.toString() });
+     } catch (error) { } */
+    if (resultOfComparison.includes("NoFace")) {
+      res.status(400).send({
+        success: false,
+        code: "NO FACE ON IMAGE",
+        message: "La imagen enviada de la selfie no contiene una cara"
+      })
+    } else {
+      res.status(200).send({
+        success: true,
+        result: resultOfComparison.includes("True") ? true : false,
+      });
+    }
   } catch (e) {
+    console.log(e);
     res.status(500).send({
       success: false,
       code: "INTERNAL_SERVER_ERROR",
