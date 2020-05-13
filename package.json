@@ -11,6 +11,7 @@
     "dev": "nodemon app.js",
     "start": "node app.js",
     "test": "mocha tests/**/*.spec.js",
+    "test-faceRecognition": "mocha tests/testFaceRecognition/*.spec.js",
     "heroku-postbuild": "npm install",
     "start-prod": "node_modules/.bin/pm2 start app.js"
   },
