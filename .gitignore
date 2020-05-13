@@ -2,4 +2,8 @@
 node_modules
 config/db.config.js
 .env
+<<<<<<< HEAD
 package.json
+=======
+package.json
+>>>>>>> 463a27a90430c2853e0ed275ed484881d1838ce5
