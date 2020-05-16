@@ -1,4 +1,4 @@
-from api-test import *
+from api_test import *
 
 def getMainMetrics(resultadosImgValidas, resultadosImgNoValidas):
     TP = resultadosImgValidas[0]

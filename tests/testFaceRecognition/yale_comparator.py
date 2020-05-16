@@ -1,7 +1,9 @@
 import os
 import time
 from array import *
-path = 'C:/Users/Usuario/Desktop/OldandNewYaleFaces/oldyalefaces'
+path = '../common/newyalefaces'
+#path = 'C:/Users/Usuario/Desktop/OldandNewYaleFaces/oldyalefaces'
+from api_test import cmpFotos
 
 def create_comparison_matrix(path):
     faces = os.listdir(path)
@@ -13,11 +15,20 @@ def create_comparison_matrix(path):
         subject_type = (split_file_name[1]).split('.')[0]
         int_subject_number = int(subject_number)
         if subject_type == 'normal':
-            normal_list[int_subject_number - 1 ] = file_name
+            normal_list[int_subject_number - 1 ] = path + "/" + file_name                       #os.path.join(path, file_name)
         else: 
-            not_normal_list[int_subject_number - 1].append(file_name)
-    not_normal_list[0] = 11
-    not_normal_list[0] = 12
+            not_normal_list[int_subject_number - 1].append(path + "/" + file_name)             #os.path.join(path, file_name))
+    return [normal_list, not_normal_list]
+
+
+face_lists = create_comparison_matrix(path)
+normal_list = face_lists[0]
+not_normal_list = face_lists[1]
     
-create_comparison_matrix(path)
-time.sleep(100)
+def compare_same_subject_x(subject_x, subject_y):
+    results = cmpFotos(normal_list[subject_x - 1], not_normal_list[subject_y - 1])
+    print(results)
+
+compare_same_subject_x(1, 1)
+
+

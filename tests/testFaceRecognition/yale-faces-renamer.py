@@ -1,6 +1,7 @@
 import os
 import time
-path = 'C:/Users/Usuario/Desktop/OldandNewYaleFaces2/oldyalefaces'
+path = '../common/newyalefaces'
+#path = 'C:/Users/Usuario/Desktop/OldandNewYaleFaces2/oldyalefaces'
 faces = os.listdir(path)
 
 def yale_name_changer(faces):
