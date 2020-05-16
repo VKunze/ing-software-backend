@@ -55,7 +55,13 @@ exports.compareFotos = async (req, res) => {
     /*  try {
        await Debug.create({ log: resultOfComparison.toString() });
      } catch (error) { } */
-    if (resultOfComparison.includes("NoFace")) {
+    if (resultOfComparison.includes("ERROR")) {
+      res.status(400).send({
+        success: false,
+        code: "FACE RECOGNITION ERROR",
+        message: resultOfComparison
+      })
+    } else if (resultOfComparison.includes("NoFace")) {
       res.status(400).send({
         success: false,
         code: "NO FACE ON IMAGE",
