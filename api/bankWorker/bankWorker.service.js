@@ -16,11 +16,11 @@ exports.findOne = async (username) => {
 };
 
 exports.create = async (username, password) => {
-  bcrypt.hash(password, 10, function (err, hash) {
+  return bcrypt.hash(password, 10, function (err, hash) {
     if (err) {
       throw err;
     }
-    BankWorker.create({ username: username, password: hash })
+    return BankWorker.create({ username: username, password: hash })
       .then((data) => {
         return data;
       })
@@ -29,17 +29,6 @@ exports.create = async (username, password) => {
       });
   });
 };
-
-async function hashpassword(password) {
-  const passwordHasheada = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, 10, function (err, hash) {
-      if (err) reject(err);
-      resolve(hash);
-    });
-  });
-  console.log("in func: " + passwordHasheada);
-  return passwordHasheada;
-}
 
 exports.saveToken = async (token, id) => {
 

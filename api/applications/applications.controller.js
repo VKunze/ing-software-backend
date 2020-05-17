@@ -52,14 +52,31 @@ exports.compareFotos = async (req, res) => {
       fotoCedula,
       fotoSelfie
     );
-    try {
-      await Debug.create({ log: resultOfComparison.toString() });
-    } catch (error) {}
-    res.status(200).send({
-      success: true,
-      result: resultOfComparison.includes("True") ? true : false,
-    });
+    if (
+      resultOfComparison.toUpperCase().includes("ERROR") &&
+      resultOfComparison.includes("NoFace")
+    ) {
+      res.status(400).send({
+        success: false,
+        result: false,
+        code: "NO_FACE",
+        message: "No ha sido posible detectar un rostro en la imagen enviada.",
+      });
+    } else if (resultOfComparison.toUpperCase().includes("ERROR")) {
+      res.status(400).send({
+        success: false,
+        result: false,
+        code: "VALIDATION_FAILED",
+        message: "No ha sido posible detectar el error que deneg",
+      });
+    } else {
+      res.status(200).send({
+        success: true,
+        result: resultOfComparison.includes("True") ? true : false,
+      });
+    }
   } catch (e) {
+    console.log(e);
     res.status(500).send({
       success: false,
       code: "INTERNAL_SERVER_ERROR",
