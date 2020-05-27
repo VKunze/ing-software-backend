@@ -3,4 +3,5 @@ node_modules
 .env
 package.json
 tests/common/newyalefaces/
-.vscode/
+.vscode/settings.json
+tests/common/calfwfaces/
