@@ -27,7 +27,7 @@ jobs:
     - run: npm ci
     - run: npm install
     - run: npm run build --if-present
-    - run: npm test
+    - name: Run tests
       env:
         DB: ${{secrets.DB}}
         DB_HOST: ${{secrets.DB_HOST}}
@@ -35,3 +35,4 @@ jobs:
         DB_PORT: ${{secrets.DB_PORT}}
         DB_USER: ${{secrets.DB_USER}}
         DB_DIALECT: ${{secrets.DB_DIALECT}}
+      run: npm test
