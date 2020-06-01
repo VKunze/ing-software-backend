@@ -13,12 +13,12 @@ exports.save = async (datosSolicitude) => {
     const solicitudeBdd = {
       productoId: await getIdProducto(datosSolicitude.producto),
       stateId: await getIdInicialState(),
-      nombrePersona: datosSolicitude.nombre,
-      apellidoPersona: datosSolicitude.apellido,
-      cedulaPersona: datosSolicitude.cedula,
-      direccionPersona: datosSolicitude.direccion,
-      sueldoPersona: datosSolicitude.sueldo,
-      direccionEntrega: datosSolicitude.direccionEntrega,
+      personFirstName: datosSolicitude.nombre,
+      personLastName: datosSolicitude.apellido,
+      personCedula: datosSolicitude.cedula,
+      personAddress: datosSolicitude.direccion,
+      personSalary: datosSolicitude.sueldo,
+      personDeliveryAddress: datosSolicitude.direccionEntrega,
     };
     //Create a solicitude in db
     Solicitude.create(solicitudeBdd).then((data) => {

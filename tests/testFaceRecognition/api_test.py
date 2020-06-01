@@ -10,12 +10,15 @@ def cmpFotos(fotoCedula, arrayFotos, path):
     amountTrue = 0
     amountFalse = 0
     for foto in arrayFotos:
-        encodings = getEncodings(path + foto)
-        verification = verifyFaces(encodingsCedula, encodings)        
-        if verification == True:
-            amountTrue += 1
-        else:
-            amountFalse += 1
+        try:
+            encodings = getEncodings(path + foto)
+            verification = verifyFaces(encodingsCedula, encodings)        
+            if verification == True:
+                amountTrue += 1
+            else:
+                amountFalse += 1
+        except:
+            print("ERROR WITH COMPARISON")
     return amountTrue, amountFalse
 
 
