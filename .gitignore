@@ -3,6 +3,8 @@ node_modules
 .env
 package.json
 tests/common/newyalefaces/
-tests/common/sofimages
+tests/common/sofimages/
+tests/common/calfwfaces/
 tests/common/LAG
-.vscode/
+.vscode/settings.json
+
