@@ -13,6 +13,6 @@ verification = verifyFaces(encodingsCedula, encodingsSelfie)
 
 errors = False
 if len(encodingsSelfie) == 0:
-	errors = 'Error: NoFace'
+    errors = 'NoFace'
 
 print(verification, errors)

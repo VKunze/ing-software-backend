@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
-    const State = sequelize.define("State", {
-      nombre: {
-        type: Sequelize.STRING
-      }
-    });
-  
-    return State;
-  };
+  const State = sequelize.define("State", {
+    name: {
+      type: Sequelize.STRING
+    }
+  });
+
+  return State;
+};
