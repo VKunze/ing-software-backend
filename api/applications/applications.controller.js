@@ -23,10 +23,20 @@ exports.generateApplication = async (req, res) => {
       });
     }
     const respuesta = await applicationsService.save(datosSolicitude);
-    res.status(200).send({
-      success: true,
-    });
+    if (typeof respuesta == 'string' && respuesta.includes("Invalid")) {
+      var message = respuesta.includes("product") ? "Product" : "Data";
+      res.status(400).send({
+        success: false,
+        code: "BAD_REQUEST",
+        message: "Invalid " + message
+      })
+    } else {
+      res.status(200).send({
+        success: true,
+      });
+    }
   } catch (e) {
+    console.log(e);
     res.status(500).send({
       success: false,
       code: "INTERNAL_SERVER_ERROR",
@@ -85,3 +95,19 @@ exports.compareFotos = async (req, res) => {
     });
   }
 };
+
+exports.getAllPendingApplications = async (req, res) => {
+  try {
+    const applications = await applicationsService.getAllPendingApplications();
+    res.status(200).send({
+      success: true,
+      applications: applications
+    });
+  } catch (e) {
+    res.status(500).send({
+      success: false,
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+    });
+  }
+}

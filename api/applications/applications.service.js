@@ -4,15 +4,25 @@ const db = require("../../db/models/index.js");
 const cloudinaryHelper = require("./../../utils/cloudinary");
 
 const Solicitude = db.solicitude;
-const Producto = db.producto;
+const Product = db.product;
 const State = db.state;
 
 exports.save = async (datosSolicitude) => {
+  var productId = "";
+  var stateId = "";
   try {
-    console.log(datosSolicitude);
+    console.log("pre");
+    productId = await getProductId(datosSolicitude.producto);
+    console.log("producto: ", productId);
+    stateId = await getIdInicialState();
+    console.log("state: ", stateId);
+  } catch (err) {
+    return "Invalid product or state";
+  }
+  try {
     const solicitudeBdd = {
-      productoId: await getIdProducto(datosSolicitude.producto),
-      stateId: await getIdInicialState(),
+      productId: productId,
+      StateId: stateId,
       personFirstName: datosSolicitude.nombre,
       personLastName: datosSolicitude.apellido,
       personCedula: datosSolicitude.cedula,
@@ -20,6 +30,12 @@ exports.save = async (datosSolicitude) => {
       personSalary: datosSolicitude.sueldo,
       personDeliveryAddress: datosSolicitude.direccionEntrega,
     };
+    for (key in solicitudeBdd) {
+      if (solicitudeBdd[key] == undefined) {
+        return "Invalid data";
+      }
+    }
+    console.log(solicitudeBdd);
     //Create a solicitude in db
     Solicitude.create(solicitudeBdd).then((data) => {
       return data;
@@ -47,7 +63,6 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
         var error;
         python.stdout.on("data", function (data) {
           dataPythonResult = data.toString();
-          console.log(data);
         });
 
         python.stderr.on("data", function (data) {
@@ -66,30 +81,48 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
     const result = await pythonScriptPromise().catch(err => {
       return "ERROR:" + err.toString();
     });
-    console.log("RESULTADO:", result);
     return result;
   } catch (err) {
-    console.log("entro en el catch grande");
     throw new Error(err);
   }
 };
 
-function getIdProducto(nombreProducto) {
-  return Producto.findOne({ where: { nombre: nombreProducto } })
+exports.getAllPendingApplications = async () => {
+  try {
+    Solicitude.findAll({
+      include: [{
+        model: State,
+        as: 'state',
+        where: {
+          name: "Esperando aprobacion"
+        }
+      }]
+    }).then((data) => {
+      console.log(data);
+      return data;
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
+function getProductId(nombreProducto) {
+  console.log(nombreProducto);
+  return Product.findOne({ where: { name: nombreProducto } })
     .then((data) => {
       return data.id;
     })
     .catch((err) => {
-      return "error";
+      throw (err);
     });
 }
 
 function getIdInicialState() {
-  return State.findOne({ where: { nombre: "esperando aprobacion" } })
+  return State.findOne({ where: { name: "Esperando aprobacion" } })
     .then((data) => {
       return data.id;
     })
     .catch((err) => {
-      return "error";
+      throw (err);
     });
 }

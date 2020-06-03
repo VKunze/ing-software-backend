@@ -5,5 +5,6 @@ applicationsRouter = express.Router();
 
 applicationsRouter.post("/", applications.generateApplication);
 applicationsRouter.post("/assets", applications.compareFotos);
+applicationsRouter.post("/pendingApplications", applications.getAllPendingApplications);
 
 module.exports = applicationsRouter;
