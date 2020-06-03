@@ -87,23 +87,18 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
   }
 };
 
-exports.getAllPendingApplications = async () => {
-  try {
-    Solicitude.findAll({
-      include: [{
-        model: State,
-        as: 'state',
-        where: {
-          name: "Esperando aprobacion"
-        }
-      }]
-    }).then((data) => {
-      console.log(data);
-      return data;
-    });
-  } catch (err) {
-    throw err;
-  }
+exports.getAllPendingApplications = () => {
+  return Solicitude.findAll({
+    include: [{
+      model: State,
+      where: {
+        name: "Esperando aprobacion"
+      }
+    }]
+  }).then((data) => {
+    console.log(data);
+    return data;
+  });
 }
 
 function getProductId(nombreProducto) {

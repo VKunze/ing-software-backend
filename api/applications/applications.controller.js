@@ -98,12 +98,14 @@ exports.compareFotos = async (req, res) => {
 
 exports.getAllPendingApplications = async (req, res) => {
   try {
-    const applications = await applicationsService.getAllPendingApplications();
+    const apps = await applicationsService.getAllPendingApplications();
     res.status(200).send({
       success: true,
-      applications: applications
+      applications: apps,
+      message: "Apps"
     });
   } catch (e) {
+    console.log(e);
     res.status(500).send({
       success: false,
       code: "INTERNAL_SERVER_ERROR",
