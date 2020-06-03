@@ -101,6 +101,20 @@ exports.getAllPendingApplications = () => {
   });
 }
 
+exports.updateState = async (idSolicitude, newState) => {
+  try {
+    var solicitude = await Solicitude.findByPk(idSolicitude);
+    var state = await State.findOne({ where: { name: newState } });
+    if (solicitude === null || state === null) {
+      return "Invalid solicitude ID/ state";
+    }
+    solicitude.setState(state);
+    return solicitude.save();
+  } catch (err) {
+    throw err;
+  }
+}
+
 function getProductId(nombreProducto) {
   console.log(nombreProducto);
   return Product.findOne({ where: { name: nombreProducto } })

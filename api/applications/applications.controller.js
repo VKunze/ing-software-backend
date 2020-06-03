@@ -113,3 +113,36 @@ exports.getAllPendingApplications = async (req, res) => {
     });
   }
 }
+
+exports.updateState = async (req, res) => {
+  try {
+    const idSolicitude = req.body.idSolicitude;
+    const newState = req.body.state;
+    if (!idSolicitude || !newState) {
+      res.status(400).send({
+        success: false,
+        code: "BAD_REQUEST",
+        message: "Ingrese idSolicitude/state",
+      });
+    }
+    const respuesta = await applicationsService.updateState(idSolicitude, newState);
+    if (typeof respuesta == 'string' && respuesta.includes("Invalid")) {
+      res.status(400).send({
+        success: false,
+        code: "BAD_REQUEST",
+        message: respuesta
+      })
+    } else {
+      res.status(200).send({
+        success: true,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({
+      success: false,
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+    });
+  }
+}
