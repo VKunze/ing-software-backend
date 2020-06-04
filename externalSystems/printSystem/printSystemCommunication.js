@@ -30,7 +30,7 @@ function updateClock() {
     if (hours < 10) { hours = '0' + horas; }
     if (minutes < 10) { minutes = '0' + minutes; }
 
-    if (hours == 17) {
+    if (hours == 17 && minutes == 59) {
         sendSolicitudesAprobadas();
     }
 }
