@@ -10,4 +10,4 @@ function receiveSolicitudes(solicitudes) {
     setTimeout(sendCardsList, 1000);
 }
 
-exports = receiveSolicitudes, sendCardsList;
+module.exports = { receiveSolicitudes, sendCardsList }

@@ -1,6 +1,6 @@
 // const test = require("../../test/testRiskSystem.js");
 
-function processRiskPorcentage(product, document, salary) {
+/* function processRiskPorcentage(product, document, salary) {
     console.log(document);
     console.log(salary);
     var riskPorcentage = riskSystem(product, document, salary);
@@ -26,4 +26,4 @@ function riskSystem(product, document, salary) {
     return riskPorcentage;
 }
 
-exports = processRiskPorcentage();
+exports = processRiskPorcentage(); */
