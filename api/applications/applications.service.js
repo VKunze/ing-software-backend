@@ -113,4 +113,4 @@ function getNameState(id) {
         });
 }
 
-exports = getNameState;
+exports = getNameState, getIdState;
