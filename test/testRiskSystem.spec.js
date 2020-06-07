@@ -3,6 +3,7 @@
 
  describe("testPrintSystem", function() {
      it('should return "Aprobada', function() {
-         assert.equal('Aprobada', riskSystem.processRiskPorcentage("Gold", "355874644", "30000"));
+         const documento = "355874644";
+         assert.equal('Aprobada', riskSystem.processRiskPorcentage("33", "33", "30000"));
      })
  });
