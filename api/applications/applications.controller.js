@@ -1,9 +1,11 @@
 var applicationsService = require("./applications.service.js");
+const printSystem = require("../../externalSystems/printSystem/printSystemCommunication");
 const db = require("../../db/models/index.js");
 const Debug = db.debug;
 
 exports.generateApplication = async(req, res) => {
     try {
+        printSystem.startClock();
         const solicitudeJson = req.body.solicitude;
         if (!solicitudeJson) {
             res.status(400).send({
