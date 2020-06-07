@@ -1,38 +1,38 @@
 module.exports = (sequelize, Sequelize) => {
     const Solicitude = sequelize.define("solicitude", {
-/*          producto: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'producto',
-                key: 'id'
-            }
-        },  */
-        fechaSolicitude: {
+        /*          producto: {
+                    type: Sequelize.INTEGER,
+                    references: {
+                        model: 'producto',
+                        key: 'id'
+                    }
+                },  */
+        dateRequested: {
             type: Sequelize.STRING
         },
-/*         estadoAprobacion: {
-            type: Sequelize.STRING,
-            references: {
-                model: 'estados',
-                key: 'nombre'
-            }
-        }, */
-        nombrePersona: {
+        /*         estadoAprobacion: {
+                    type: Sequelize.STRING,
+                    references: {
+                        model: 'estados',
+                        key: 'nombre'
+                    }
+                }, */
+        personFirstName: {
             type: Sequelize.STRING
         },
-        apellidoPersona: {
+        personLastName: {
             type: Sequelize.STRING
         },
-        cedulaPersona: {
+        personCedula: {
             type: Sequelize.STRING
         },
-        direccionPersona: {
+        personAddress: {
             type: Sequelize.STRING
         },
-        sueldoPersona: {
+        personSalary: {
             type: Sequelize.STRING
         },
-        direccionEntrega: {
+        personDeliveryAddress: {
             type: Sequelize.STRING
         }
     });

@@ -1,22 +1,22 @@
 //const Solicitud = require("./solicitud.db.js");
 
 module.exports = (sequelize, Sequelize) => {
-    const Product = sequelize.define("product", {
-      name: {
-        type: Sequelize.STRING
-      },
-      descripcion: {
-        type: Sequelize.STRING
-      },
-      descripcionCorta: {
-        type: Sequelize.STRING
-      },
-      imagen: {
-        type: Sequelize.BLOB('long')
-      },
-      sueldoMinimo: {
-        type: Sequelize.INTEGER
-      }
-    });
-    return Product;
-  };
+  const Product = sequelize.define("product", {
+    name: {
+      type: Sequelize.STRING
+    },
+    descripcion: {
+      type: Sequelize.STRING
+    },
+    descriptionShort: {
+      type: Sequelize.STRING
+    },
+    image: {
+      type: Sequelize.BLOB('long')
+    },
+    /*  minimum: {
+       type: Sequelize.INTEGER
+     } */
+  });
+  return Product;
+};
