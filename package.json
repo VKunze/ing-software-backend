@@ -30,6 +30,7 @@
     "mocha": "^7.1.2",
     "mysql2": "^2.0.2",
     "nodemon": "^2.0.2",
+    "onesignal-node": "^3.0.2",
     "pm2": "^4.4.0",
     "sequelize": "^5.21.2"
   }

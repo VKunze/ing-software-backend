@@ -1,6 +1,7 @@
 var applicationsService = require("./applications.service.js");
 const db = require("../../db/models/index.js");
 const Debug = db.debug;
+const notificationHelper = require("./../../utils/notifications.js");
 
 exports.generateApplication = async (req, res) => {
   try {
@@ -14,17 +15,20 @@ exports.generateApplication = async (req, res) => {
     }
     const respuesta = await applicationsService.save(solicitudeJson);
     console.log("respuesta:", respuesta);
-    if (typeof respuesta == 'string' && respuesta.includes("Invalid")) {
+    if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
       var message = respuesta.includes("product") ? "Product" : "Data";
       return res.status(400).send({
         success: false,
         code: "BAD_REQUEST",
-        message: "Invalid " + message
-      })
+        message: "Invalid " + message,
+      });
     } else {
+      notificationHelper.sendPushNotificationToAdmins().catch((e) => {
+        console.log(e);
+      });
       return res.status(200).send({
         success: true,
-        estado: respuesta
+        estado: respuesta,
       });
     }
   } catch (e) {
@@ -93,7 +97,7 @@ exports.getAllPendingApplications = async (req, res) => {
     res.status(200).send({
       success: true,
       applications: apps,
-      message: "Apps"
+      message: "Apps",
     });
   } catch (e) {
     console.log(e);
@@ -103,7 +107,7 @@ exports.getAllPendingApplications = async (req, res) => {
       message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
     });
   }
-}
+};
 
 exports.updateState = async (req, res) => {
   try {
@@ -117,12 +121,12 @@ exports.updateState = async (req, res) => {
       });
     }
     const respuesta = await applicationsService.updateState(idSolicitude, newState);
-    if (typeof respuesta == 'string' && respuesta.includes("Invalid")) {
+    if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
       res.status(400).send({
         success: false,
         code: "BAD_REQUEST",
-        message: respuesta
-      })
+        message: respuesta,
+      });
     } else {
       res.status(200).send({
         success: true,
@@ -136,4 +140,4 @@ exports.updateState = async (req, res) => {
       message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
     });
   }
-}
+};
