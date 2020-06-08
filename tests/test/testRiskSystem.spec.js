@@ -1,5 +1,5 @@
  var assert = require("assert");
- const riskSystem = require("../externalSystems/riskSystem/processRiskPorcentage.js");
+ const riskSystem = require("../../externalSystems/riskSystem/processRiskPorcentage");
 
  describe("testPrintSystem", function() {
      it('should return "Aprobada', function() {
