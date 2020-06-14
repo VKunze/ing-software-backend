@@ -20,6 +20,7 @@ exports.save = async(datosSolicitude) => {
             personAddress: datosSolicitude.direccion,
             personSalary: datosSolicitude.sueldo,
             personDeliveryAddress: datosSolicitude.direccionEntrega,
+            personSalaryPhoto: datosSolicitude.comprobanteSueldo
         };
         //Create a solicitude in db
         Solicitude.create(solicitudeBdd).then((data) => {
