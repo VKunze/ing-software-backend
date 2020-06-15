@@ -40,7 +40,8 @@ exports.save = async (datosSolicitude) => {
       return data;
     });
     var stateId = processRiskPorcentage.processRiskPorcentage(solicitudeBdd.productId, solicitudeBdd.personCedula, solicitudeBdd.personSalary);
-    this.updateState(createdInstance.id, stateId);
+    var xx = await this.updateState(createdInstance.id, stateId);
+    console.log(xx);
     return stateId;
   } catch (err) {
     console.log(err);
@@ -107,10 +108,10 @@ exports.getAllPendingApplications = () => {
 exports.updateState = async (idSolicitude, newState) => {
   try {
     var solicitude = await Solicitude.findByPk(idSolicitude);
-    //console.log(solicitude);
-    //console.log("new state: ", newState);
+    console.log(solicitude);
+    console.log("new state: ", newState);
     var state = await State.findOne({ where: { name: newState } });
-    //console.log(state);
+    console.log(state);
     if (solicitude === null || state === null) {
       return "Invalid solicitude ID/ state";
     }
