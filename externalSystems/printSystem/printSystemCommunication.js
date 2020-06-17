@@ -1,6 +1,7 @@
 const applicationsService = require("../../api/applications/applications.service.js");
 const printSystem = require("./printSystemSimulation.js");
 const db = require("../../db/models/index.js");
+const notifications = require("../../utils/notifications.js");
 
 function sendSolicitudesAprobadas() {
     var solicitudesAprobadas = getSolicitudesAprobadas();
@@ -19,7 +20,11 @@ function getSolicitudesAprobadas() {
 }
 
 function getReadyCards() {
-    return printSystem.sendCardsList();
+    var cedulas = [];
+    for (solicitude in printSystem.sendCardsList()) {
+        cedulas.push(solicitude[personCedula]);
+    }
+    notifications.sendPushNotificationToAppliants(cedulas);
 }
 
 function updateClock() {
@@ -30,13 +35,14 @@ function updateClock() {
     if (hours < 10) { hours = '0' + horas; }
     if (minutes < 10) { minutes = '0' + minutes; }
 
-    if (hours == 19 && minutes == 46) {
-        sendSolicitudesAprobadas();
-    }
+    // if (hours == 20 && minutes == 00) {
+    sendSolicitudesAprobadas();
+    // }
 }
 
 function startClock() {
-    setInterval(updateClock, 10000);
+    // setInterval(updateClock, 10000);
+    setTimeout(updateClock, 60000);
 }
 
 

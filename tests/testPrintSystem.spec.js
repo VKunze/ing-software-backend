@@ -4,7 +4,7 @@ const printSystem = require("../externalSystems/printSystem/printSystemCommunica
 const applicationsService = require("../../api/applications/applications.service.js"); */
 
 
-describe("testPrintSystem", function () {
+/* describe("testPrintSystem", function () {
     it('should list solicitudes aprobadas', function () {
         var dateTime = new Date();
         var hours = dateTime.getHours();
@@ -17,7 +17,7 @@ describe("testPrintSystem", function () {
             assert.equal(printSystem.getSolicitudesAprobadas(), printSystem.getReadyCards());
         }
     })
-});
+}); */
 
 /* function getSolicitudesAprobadas() {
     const Solicitude = db.solicitude;

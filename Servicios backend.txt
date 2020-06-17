@@ -1,29 +1,42 @@
-Login:
+Bankworkers:
+Login
 tipo de request: POST
-ruta: "/login"
-parametros a pasar en el body: 
-- username
-- password
+ruta: "/bank/login"
+Parametros: 
+	username
+	password
+Respuesta:
+	username
+	token
+
+Guardar funcionario del banco:
+tipo de request: POST
+ruta: "/bank/new"
+Parametros:
+	username
+	password
+Respuesta: -
 
 Productos:
 1. Obtener los productos posibles:
 tipo de request: GET
-ruta: "/getProducts"
+ruta: "products/"
 parametros a pasar: -
-respuesta: productos (nombre, descripcion corta e imagen) en formato JSON
+respuesta: products (nombre, descripcion corta e imagen) en formato JSON
 
 2. Obtener detalles de un producto:
 tipo de request: GET
-ruta: "getProductDetails"
+ruta: "products/details"
 parametros a pasar: 
-- productName
+	productName
 respuesta: 
+	products (detalles del producto)
 
-Para guardar los datos de la solicitud en la bdd:
+Solicitudes:
+Guardar los datos de la solicitud en la bdd:
 tipo de request: POST
-ruta: "/enviarSolicitud"
-parametros a pasar en el body: 
-- "solicitud": Un JSON, con las siguientes caracteristicas:
+ruta: "applications/"
+Parametros (formato JSON): 
 	producto
 	nombre
 	apellido
@@ -31,3 +44,26 @@ parametros a pasar en el body:
 	direccion
 	sueldo
 	direccionEntrega
+Respuesta: estado de la solicitud
+
+Comparar 2 fotos para comprobar su identidad:
+tipo de request: POST
+ruta: "applications/assets/"
+Parámetros (formato JSON, en base64): 
+	fotoCedula
+	fotoSelfie
+Respuesta: true/false
+
+Obtener solicitudes cuyo estado es pendiente:
+tipo de request: GET
+ruta: "applications/pending/"
+Parámetros: -
+Respuesta: lista de las solicitudes pendientes
+
+Actualizar el estado de una solicitud:
+tipo de request: POST
+ruta: "applications/updateState/"
+Parámetros (JSON):
+	idSolicitude
+	newState
+Respuesta: -

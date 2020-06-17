@@ -1,36 +1,38 @@
 var applicationsService = require("./applications.service.js");
-const printSystem = require("../../externalSystems/printSystem/printSystemCommunication");
 const db = require("../../db/models/index.js");
 const Debug = db.debug;
+const notificationHelper = require("./../../utils/notifications.js");
 
 exports.generateApplication = async(req, res) => {
     try {
-        printSystem.startClock();
-        const solicitudeJson = req.body.solicitude;
+        const solicitudeJson = req.body;
         if (!solicitudeJson) {
-            res.status(400).send({
+            return res.status(400).send({
                 success: false,
                 code: "BAD_REQUEST",
                 message: "Ingrese una solicitude",
             });
         }
-        var datosSolicitude = "";
-        try {
-            datosSolicitude = JSON.parse(solicitudeJson);
-        } catch (err) {
-            res.status(400).send({
+        const respuesta = await applicationsService.save(solicitudeJson);
+        console.log("respuesta:", respuesta);
+        if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
+            var message = respuesta.includes("product") ? "Product" : "Data";
+            return res.status(400).send({
                 success: false,
                 code: "BAD_REQUEST",
-                message: "The solicitude has to be in JSON formatting",
+                message: "Invalid " + message,
+            });
+        } else {
+            notificationHelper.sendPushNotificationToAdmins().catch((e) => {
+                console.log(e);
+            });
+            return res.status(200).send({
+                success: true,
+                estado: respuesta,
             });
         }
-        const respuesta = await applicationsService.save(datosSolicitude);
-        res.status(200).send({
-            success: true,
-            message: applicationsService.getNameState(datosSolicitude.statusId)
-        });
     } catch (e) {
-        res.status(500).send({
+        return res.status(500).send({
             success: false,
             code: "INTERNAL_SERVER_ERROR",
             message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
@@ -85,6 +87,62 @@ exports.compareFotos = async(req, res) => {
             code: "INTERNAL_SERVER_ERROR",
             message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
             trace: e,
+        });
+    }
+};
+
+exports.getAllPendingApplications = async(req, res) => {
+    try {
+        const apps = await applicationsService.getAllPendingApplications();
+        res.status(200).send({
+            success: true,
+            applications: apps,
+            message: "Apps",
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        });
+    }
+};
+
+exports.updateState = async(req, res) => {
+    try {
+        const idSolicitude = req.body.idSolicitude;
+        const newState = req.body.state;
+        if (!idSolicitude || !newState) {
+            res.status(400).send({
+                success: false,
+                code: "BAD_REQUEST",
+                message: "Ingrese idSolicitude/state",
+            });
+        }
+        const respuesta = await applicationsService.updateState(idSolicitude, newState);
+        var ci = await applicationsService.getCedula(idSolicitude);
+        notificationHelper.sendPushNotificationToAppliants([ci]).catch((e) => {
+            console.log(e);
+        });
+
+        if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
+            res.status(400).send({
+                success: false,
+                code: "BAD_REQUEST",
+                message: respuesta,
+            });
+        } else {
+            res.status(200).send({
+                success: true,
+            });
+        }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
         });
     }
 };
