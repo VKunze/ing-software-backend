@@ -3,7 +3,7 @@ const db = require("../../db/models/index.js");
 const Debug = db.debug;
 const notificationHelper = require("./../../utils/notifications.js");
 
-exports.generateApplication = async(req, res) => {
+exports.generateApplication = async (req, res) => {
     try {
         const solicitudeJson = req.body;
         if (!solicitudeJson) {
@@ -40,7 +40,7 @@ exports.generateApplication = async(req, res) => {
     }
 };
 
-exports.compareFotos = async(req, res) => {
+exports.compareFotos = async (req, res) => {
     try {
         const userIdCardNumber = req.body.userIdCardNumber;
         const fotoCedula = req.body.fotoCedula;
@@ -91,7 +91,7 @@ exports.compareFotos = async(req, res) => {
     }
 };
 
-exports.getAllPendingApplications = async(req, res) => {
+exports.getAllPendingApplications = async (req, res) => {
     try {
         const apps = await applicationsService.getAllPendingApplications();
         res.status(200).send({
@@ -109,7 +109,7 @@ exports.getAllPendingApplications = async(req, res) => {
     }
 };
 
-exports.updateState = async(req, res) => {
+exports.updateState = async (req, res) => {
     try {
         const idSolicitude = req.body.idSolicitude;
         const newState = req.body.state;
@@ -137,6 +137,58 @@ exports.updateState = async(req, res) => {
                 success: true,
             });
         }
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        });
+    }
+};
+
+exports.getPendingApplicationsByName = async (req, res) => {
+    try {
+        const clientFirstName = req.query.clientFirstName
+        const clientLastName = req.query.clientLastName
+        if (!clientFirstName && !clientLastName) {
+            res.status(400).send({
+                success: false,
+                code: "BAD_REQUEST",
+                message: "Ingrese nombre y/o apellido",
+            });
+        }
+        if (!clientFirstName) {
+            clientFirstName = " "
+        }
+        if (!clientLastName) {
+            clientLastName = " "
+        }
+        const appsByName = await applicationsService.getPendingApplicationsByName(clientFirstName, clientLastName);
+        res.status(200).send({
+            success: true,
+            applicationsByName: appsByName,
+            message: "Apps by name"
+        });
+
+    } catch (e) {
+        console.log(e);
+        res.status(404).send({
+            success: false,
+            code: "NOT_FOUND",
+            message: "No se ha encontrado ninguna solicitud que corresponda a esa persona.",
+        });
+    }
+};
+
+exports.getAllApprovedApplications = async (req, res) => {
+    try {
+        const apps = await applicationsService.getAllApprovedApplications();
+        res.status(200).send({
+            success: true,
+            applications: apps,
+            message: "Apps",
+        });
     } catch (e) {
         console.log(e);
         res.status(500).send({
