@@ -1,4 +1,8 @@
-const { spawn } = require("child_process");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+const {
+  spawn
+} = require("child_process");
 var base64Img = require("base64-img");
 const db = require("../../db/models/index.js");
 const cloudinaryHelper = require("./../../utils/cloudinary");
@@ -104,7 +108,11 @@ exports.getAllPendingApplications = () => {
 exports.updateState = async (idSolicitude, newState) => {
   try {
     var solicitude = await Solicitude.findByPk(idSolicitude);
-    var state = await State.findOne({ where: { name: newState } });
+    var state = await State.findOne({
+      where: {
+        name: newState
+      }
+    });
     if (solicitude === null || state === null) {
       return "Invalid solicitude ID/ state";
     }
@@ -117,7 +125,11 @@ exports.updateState = async (idSolicitude, newState) => {
 
 function getProductId(nombreProducto) {
   console.log(nombreProducto);
-  return Product.findOne({ where: { name: nombreProducto } })
+  return Product.findOne({
+      where: {
+        name: nombreProducto
+      }
+    })
     .then((data) => {
       return data.id;
     })
@@ -127,11 +139,38 @@ function getProductId(nombreProducto) {
 }
 
 function getIdInicialState() {
-  return State.findOne({ where: { name: "Esperando aprobacion" } })
+  return State.findOne({
+      where: {
+        name: "Esperando aprobacion"
+      }
+    })
     .then((data) => {
       return data.id;
     })
     .catch((err) => {
       throw (err);
     });
+}
+
+
+exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
+  return Solicitude.findAll({
+    where: {
+      personFirstName: {
+        [Op.like]: clientFirstName
+      },
+      personLastName: {
+        [Op.like]: clientLastName
+      },
+    },
+    include: [{
+      model: State,
+      where: {
+        name: "Esperando aprobacion"
+      }
+    }]
+  }).then((data) => {
+    console.log(data);
+    return data;
+  });
 }

@@ -146,3 +146,31 @@ exports.updateState = async (req, res) => {
     });
   }
 }
+
+exports.getPendingApplicationsByName = async (req, res) => {
+  try {
+    const clientFirstName = req.query.clientFirstName
+    const clientLastName = req.query.clientLastName
+    if (!clientFirstName && !clientLastName) {
+      res.status(400).send({
+        success: false,
+        code: "BAD_REQUEST",
+        message: "Ingrese nombre y apellido del cliente correctamente",
+      });
+    }
+    const appsByName = await applicationsService.getPendingApplicationsByName(clientFirstName, clientLastName);
+    res.status(200).send({
+      success: true,
+      applicationsByName: appsByName,
+      message: "Apps by name"
+    });
+
+  } catch (e) {
+    console.log(e);
+    res.status(404).send({
+      success: false,
+      code: "NOT_FOUND",
+      message: "No se ha encontrado ninguna solicitud que corresponda a esa persona.",
+    });
+  }
+}
