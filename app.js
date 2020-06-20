@@ -3,18 +3,28 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("./db/models/index.js");
 const apiRoutes = require("./api/index");
+const helmet = require("helmet");
 const cron = require("node-cron");
 const printSystem = require("./externalSystems/printSystem/printSystemCommunication");
+
 
 var app = express();
 require("dotenv").config();
 
+app.use(helmet())
 app.use(cors());
-app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+app.use(bodyParser.json({
+  limit: "10mb"
+}));
+app.use(bodyParser.urlencoded({
+  limit: "10mb",
+  extended: true
+}));
 app.use(express.static(__dirname));
 
-db.sequelize.sync({ force: false });
+db.sequelize.sync({
+  force: false
+});
 app.use("", apiRoutes);
 
 try {

@@ -34,6 +34,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         personDeliveryAddress: {
             type: Sequelize.STRING
+        },
+        comment: {
+            type: Sequelize.STRING
         }
     });
 
