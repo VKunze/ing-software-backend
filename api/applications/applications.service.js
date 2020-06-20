@@ -15,7 +15,7 @@ const Product = db.product;
 const State = db.state;
 
 exports.save = async (datosSolicitude) => {
-    printSystem.startClock();
+    // printSystem.startClock();
     var productId = "";
     var stateId = "";
     try {
