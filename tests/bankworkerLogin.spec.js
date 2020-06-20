@@ -14,7 +14,7 @@ describe("BankWorker", function () {
             if (!userFromDB) {
                 assert.fail();
             }
-            const result = bcrypt.compareSync(password, userFromDB["password"]);
+            const result = bcrypt.compareSync(password, userFromDB.password);
 
             assert.equal(true, result);
         });
