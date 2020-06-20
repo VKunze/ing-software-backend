@@ -9,5 +9,7 @@ applicationsRouter.get("/pending", applications.getAllPendingApplications);
 applicationsRouter.post("/updateState", applications.updateState);
 applicationsRouter.get("/pendingByName", applications.getPendingApplicationsByName);
 applicationsRouter.get("/approved", applications.getAllApprovedApplications);
+applicationsRouter.get("/getProductById", applications.getProductById);
+
 
 module.exports = applicationsRouter;

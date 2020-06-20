@@ -151,6 +151,21 @@ function getProductId(nombreProducto) {
         });
 }
 
+exports.getProductById = (productId) => {
+    //console.log(nombreProducto);
+    return Product.findOne({
+            where: {
+                id: productId
+            }
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((err) => {
+            throw (err);
+        });
+}
+
 function getIdInicialState() {
     return State.findOne({
             where: {

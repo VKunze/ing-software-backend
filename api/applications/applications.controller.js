@@ -199,3 +199,23 @@ exports.getAllApprovedApplications = async (req, res) => {
         });
     }
 };
+
+exports.getProductById = async (req, res) => {
+    try {
+        const productId = req.query.productId
+        console.log(productId)
+        const product = await applicationsService.getProductById(productId);
+        res.status(200).send({
+            success: true,
+            product: product,
+            message: "Product",
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        });
+    }
+};
