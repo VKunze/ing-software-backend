@@ -4,6 +4,9 @@ const cors = require("cors");
 const db = require("./db/models/index.js");
 const apiRoutes = require("./api/index");
 const helmet = require("helmet");
+const cron = require("node-cron");
+const printSystem = require("./externalSystems/printSystem/printSystemCommunication");
+
 
 var app = express();
 require("dotenv").config();
@@ -23,6 +26,14 @@ db.sequelize.sync({
   force: false
 });
 app.use("", apiRoutes);
+
+try {
+  cron.schedule("0 20 * * *", () => {
+    printSystem.sendSolicitudesAprobadas();
+  });
+} catch (error) {
+  console.log(error);
+}
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
