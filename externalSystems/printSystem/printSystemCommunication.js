@@ -3,16 +3,17 @@ const printSystem = require("./printSystemSimulation.js");
 const db = require("../../db/models/index.js");
 const notifications = require("../../utils/notifications.js");
 
-function sendSolicitudesAprobadas() {
-  var solicitudesAprobadas = getSolicitudesAprobadas();
+async function sendSolicitudesAprobadas() {
+  var solicitudesAprobadas = await getSolicitudesAprobadas();
   printSystem.receiveSolicitudes(solicitudesAprobadas);
 }
 
 const Solicitude = db.solicitude;
 
-function getSolicitudesAprobadas() {
+async function getSolicitudesAprobadas() {
+  const stateId = await applicationsService.getIdState("Aprobada");
   return Solicitude.findAll({
-    where: { stateId: await applicationsService.getIdState("Aprobada") },
+    where: { stateId },
   })
     .then((data) => {
       return data;
