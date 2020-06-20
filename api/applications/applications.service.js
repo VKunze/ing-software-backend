@@ -203,25 +203,61 @@ function getCedula(id) {
 }
 
 exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
-    return Solicitude.findAll({
-        where: {
-            personFirstName: {
-                [Op.like]: '%' + clientFirstName + '%'
-            },
-            personLastName: {
-                [Op.like]: '%' + clientLastName + '%'
-            },
-        },
-        include: [{
-            model: State,
+    if(clientFirstName && clientLastName){
+        return Solicitude.findAll({    
             where: {
-                name: "Esperando aprobacion"
-            }
-        }]
-    }).then((data) => {
-        console.log(data);
-        return data;
-    });
+                personFirstName: {
+                    [Op.like]: '%' + clientFirstName + '%'
+                },
+                personLastName: {
+                    [Op.like]: '%' + clientLastName + '%'
+                },
+            },
+            include: [{
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            }]
+        }).then((data) => {
+            console.log(data);
+            return data;
+        });
+    }  else if (clientFirstName && !clientLastName){
+        return Solicitude.findAll({    
+            where: {
+                personFirstName: {
+                    [Op.like]: '%' + clientFirstName + '%'
+                }
+            },
+            include: [{
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            }]
+        }).then((data) => {
+            console.log(data);
+            return data;
+        });
+    } else if (!clientFirstName && clientLastName){
+        return Solicitude.findAll({    
+            where: {
+                personLastName: {
+                    [Op.like]: '%' + clientLastName + '%'
+                }
+            },
+            include: [{
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            }]
+        }).then((data) => {
+            console.log(data);
+            return data;
+        });
+    }
 }
 
 exports.getAllApprovedApplications = () => {
