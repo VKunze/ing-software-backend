@@ -32,10 +32,9 @@ exports.save = async (datosSolicitude) => {
 
         for (key in solicitudeBdd) {
             if (solicitudeBdd[key] == undefined) {
-                return "Invalid data";
+                return "Incomplete data";
             }
         }
-        console.log(solicitudeBdd);
         //Create a solicitude in db
         var createdInstance = await Solicitude.create(solicitudeBdd).then((data) => {
             return data;
@@ -100,7 +99,6 @@ exports.getAllPendingApplications = () => {
             }
         }]
     }).then((data) => {
-        // console.log(data);
         return data;
     });
 }
@@ -108,10 +106,7 @@ exports.getAllPendingApplications = () => {
 exports.updateState = async (idSolicitude, newState) => {
     try {
         var solicitude = await Solicitude.findByPk(idSolicitude);
-        //console.log(solicitude);
-        //console.log("new state: ", newState);
         var state = await State.findOne({ where: { name: newState } });
-        //console.log(state);
         if (solicitude === null || state === null) {
             return "Invalid solicitude ID/ state";
         }
@@ -123,7 +118,6 @@ exports.updateState = async (idSolicitude, newState) => {
 }
 
 function getProductId(nombreProducto) {
-    //console.log(nombreProducto);
     return Product.findOne({ where: { name: nombreProducto } })
         .then((data) => {
             return data.id;

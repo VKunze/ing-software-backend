@@ -3,7 +3,7 @@ const db = require("../../db/models/index.js");
 const Debug = db.debug;
 const notificationHelper = require("./../../utils/notifications.js");
 
-exports.generateApplication = async(req, res) => {
+exports.generateApplication = async (req, res) => {
     try {
         const solicitudeJson = req.body;
         if (!solicitudeJson) {
@@ -14,13 +14,13 @@ exports.generateApplication = async(req, res) => {
             });
         }
         const respuesta = await applicationsService.save(solicitudeJson);
-        console.log("respuesta:", respuesta);
-        if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
-            var message = respuesta.includes("product") ? "Product" : "Data";
+        //console.log("respuesta:", respuesta);
+        if (typeof respuesta == "string" && (respuesta.includes("Invalid") || respuesta.includes("Incomplete"))) {
+            var message = respuesta.includes("product") ? "Invalid Product" : "Incomplete Data";
             return res.status(400).send({
                 success: false,
                 code: "BAD_REQUEST",
-                message: "Invalid " + message,
+                message: message,
             });
         } else {
             notificationHelper.sendPushNotificationToAdmins().catch((e) => {
@@ -40,7 +40,7 @@ exports.generateApplication = async(req, res) => {
     }
 };
 
-exports.compareFotos = async(req, res) => {
+exports.compareFotos = async (req, res) => {
     try {
         const userIdCardNumber = req.body.userIdCardNumber;
         const fotoCedula = req.body.fotoCedula;
@@ -91,7 +91,7 @@ exports.compareFotos = async(req, res) => {
     }
 };
 
-exports.getAllPendingApplications = async(req, res) => {
+exports.getAllPendingApplications = async (req, res) => {
     try {
         const apps = await applicationsService.getAllPendingApplications();
         res.status(200).send({
@@ -109,7 +109,7 @@ exports.getAllPendingApplications = async(req, res) => {
     }
 };
 
-exports.updateState = async(req, res) => {
+exports.updateState = async (req, res) => {
     try {
         const idSolicitude = req.body.idSolicitude;
         const newState = req.body.state;
