@@ -113,6 +113,7 @@ exports.updateState = async (req, res) => {
     try {
         const idSolicitude = req.body.idSolicitude;
         const newState = req.body.state;
+        const comment = req.body.comment;
         if (!idSolicitude || !newState) {
             res.status(400).send({
                 success: false,
@@ -120,7 +121,7 @@ exports.updateState = async (req, res) => {
                 message: "Ingrese idSolicitude/state",
             });
         }
-        const respuesta = await applicationsService.updateState(idSolicitude, newState);
+        const respuesta = await applicationsService.updateState(idSolicitude, newState, comment);
         var ci = await applicationsService.getCedula(idSolicitude);
         notificationHelper.sendPushNotificationToAppliants([ci]).catch((e) => {
             console.log(e);

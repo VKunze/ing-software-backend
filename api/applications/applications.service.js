@@ -32,6 +32,7 @@ exports.save = async (datosSolicitude) => {
             personAddress: datosSolicitude.direccion,
             personSalary: datosSolicitude.sueldo,
             personDeliveryAddress: datosSolicitude.direccionEntrega,
+            comment: datosSolicitude.comment
         };
 
         for (key in solicitudeBdd) {
@@ -45,7 +46,7 @@ exports.save = async (datosSolicitude) => {
             return data;
         });
         var stateId = processRiskPorcentage.processRiskPorcentage(solicitudeBdd.productId, solicitudeBdd.personCedula, solicitudeBdd.personSalary);
-        this.updateState(createdInstance.id, stateId);
+        this.updateState(createdInstance.id, stateId, comment);
         return stateId;
     } catch (err) {
         console.log(err);
@@ -109,7 +110,7 @@ exports.getAllPendingApplications = () => {
     });
 }
 
-exports.updateState = async (idSolicitude, newState) => {
+exports.updateState = async (idSolicitude, newState, comment) => {
     try {
         var solicitude = await Solicitude.findByPk(idSolicitude);
         //console.log(solicitude);
@@ -119,6 +120,11 @@ exports.updateState = async (idSolicitude, newState) => {
                 name: newState
             }
         });
+        await solicitude.update(
+            {comment}, 
+            {
+                where: {id: idSolicitude}
+            })
         //console.log(state);
         if (solicitude === null || state === null) {
             return "Invalid solicitude ID/ state";
@@ -188,7 +194,7 @@ function getNameState(id) {
         });
 }
 
-function getCedula(id) {
+exports.getCedula = (id) => {
     return Solicitude.findOne({
             where: {
                 id: id
@@ -275,4 +281,4 @@ exports.getAllApprovedApplications = () => {
 }
 
 
-exports = getNameState, getCedula;
+exports = getNameState;
