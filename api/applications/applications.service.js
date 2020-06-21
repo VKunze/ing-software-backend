@@ -45,7 +45,7 @@ exports.save = async (datosSolicitude) => {
             return data;
         });
         var stateId = processRiskPorcentage.processRiskPorcentage(solicitudeBdd.productId, solicitudeBdd.personCedula, solicitudeBdd.personSalary);
-        this.updateState(createdInstance.id, stateId, comment);
+        this.updateState(createdInstance.id, stateId, null);
         return stateId;
     } catch (err) {
         console.log(err);
@@ -119,12 +119,9 @@ exports.updateState = async (idSolicitude, newState, comment) => {
                 name: newState
             }
         });
-        await solicitude.update(
-            {comment}, 
-            {
-                where: {id: idSolicitude}
-            })
-        //console.log(state);
+        if (comment) {
+            await solicitude.update({comment}, { where: {id: idSolicitude}})
+        }
         if (solicitude === null || state === null) {
             return "Invalid solicitude ID/ state";
         }
