@@ -19,7 +19,7 @@ function generateComparePhotosApiKey(){
         },
         process.env.COMPARE_PHOTOS_KEY,
         {
-            expiresIn: 600,
+            expiresIn: 1200,
         }
 
     );

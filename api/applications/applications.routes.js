@@ -4,8 +4,8 @@ const middleware = require("../auth/middleware");
 
 applicationsRouter = express.Router();
 
-applicationsRouter.post("/", applications.generateApplication);
-applicationsRouter.post("/assets", applications.compareFotos);
+applicationsRouter.post("/", middleware.check_expiration, middleware.check_scopes(['generateApplication']), applications.generateApplication);
+applicationsRouter.post("/assets",middleware.check_expiration, middleware.check_scopes(['face_rec']), applications.compareFotos);
 applicationsRouter.get("/pending", middleware.authenticateToken, applications.getAllPendingApplications);
 applicationsRouter.post("/updateState", middleware.authenticateToken, applications.updateState);
 applicationsRouter.get("/pendingByName", middleware.authenticateToken, applications.getPendingApplicationsByName);
