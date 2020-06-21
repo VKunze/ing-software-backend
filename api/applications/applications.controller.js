@@ -242,3 +242,21 @@ exports.proofOfLifeApproved = (req, res) => {
 
 
 }
+
+exports.getAllApplications = async (req, res) => {
+    try {
+        const apps = await applicationsService.getAllApplications();
+        res.status(200).send({
+            success: true,
+            applications: apps,
+            message: "Apps",
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            success: false,
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        });
+    }
+};

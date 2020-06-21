@@ -13,6 +13,7 @@ applicationsRouter.get("/approved", middleware.authenticateToken, applications.g
 applicationsRouter.get("/getProductById", middleware.authenticateToken, applications.getProductById);
 applicationsRouter.post("/proofOfLifeApproved", applications.proofOfLifeApproved);
 applicationsRouter.post("/scopeTest", middleware.check_expiration, middleware.check_scopes(['face_rec']), applications.getAllPendingApplications);
+applicationsRouter.get("/getAllApplications", middleware.check_expiration, applications.getAllApplications);
 
 
 module.exports = applicationsRouter;

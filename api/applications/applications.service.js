@@ -296,5 +296,22 @@ exports.getAllApprovedApplications = () => {
     });
 }
 
+exports.getAllApplications = () => {
+    return Solicitude.findAll({
+        include: [
+            {
+                model: State,
+            },
+            {
+                model: Product,
+            }
+        ]
+    }).then((data) => {
+        // console.log(data);
+        return data;
+    });
+}
+
+
 
 exports = getNameState;
