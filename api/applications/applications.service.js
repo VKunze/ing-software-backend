@@ -220,24 +220,29 @@ exports.getCedula = (id) => {
 
 exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
     if(clientFirstName && clientLastName){
-        return Solicitude.findAll({    
-            where: {
-                personFirstName: {
-                    [Op.like]: '%' + clientFirstName + '%'
-                },
-                personLastName: {
-                    [Op.like]: '%' + clientLastName + '%'
-                },
+        return Solicitude.findAll({
+          where: {
+            personFirstName: {
+              [Op.like]: "%" + clientFirstName + "%",
             },
-            include: [{
-                model: State,
-                where: {
-                    name: "Esperando aprobacion"
-                }
-            }]
+            personLastName: {
+              [Op.like]: "%" + clientLastName + "%",
+            },
+          },
+          include: [
+            {
+              model: State,
+              where: {
+                name: "Esperando aprobacion",
+              },
+            },
+            {
+              model: Product,
+            },
+          ],
         }).then((data) => {
-            console.log(data);
-            return data;
+          console.log(data);
+          return data;
         });
     }  else if (clientFirstName && !clientLastName){
         return Solicitude.findAll({    
@@ -278,15 +283,20 @@ exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
 
 exports.getAllApprovedApplications = () => {
     return Solicitude.findAll({
-        include: [{
-            model: State,
-            where: {
-                name: "Aprobada"
-            }
-        }]
+      include: [
+        {
+          model: State,
+          where: {
+            name: "Aprobada",
+          },
+        },
+        {
+          model: Product,
+        },
+      ],
     }).then((data) => {
-        // console.log(data);
-        return data;
+      // console.log(data);
+      return data;
     });
 }
 
