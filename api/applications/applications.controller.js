@@ -2,6 +2,7 @@ var applicationsService = require("./applications.service.js");
 const db = require("../../db/models/index.js");
 const Debug = db.debug;
 const notificationHelper = require("./../../utils/notifications.js");
+var helpers = require("../../utils/helpers.js");
 
 exports.generateApplication = async (req, res) => {
     try {
@@ -75,8 +76,10 @@ exports.compareFotos = async (req, res) => {
                 message: "No ha sido posible detectar el error que deneg",
             });
         } else {
+            var apiKey = helpers.generateApplicationApiKey();
             res.status(200).send({
                 success: true,
+                apiKey: apiKey,
                 result: resultOfComparison.includes("True") ? true : false,
             });
         }
@@ -219,3 +222,23 @@ exports.getProductById = async (req, res) => {
         });
     }
 };
+
+exports.proofOfLifeApproved = (req, res) => {
+
+    try {
+        var apiKey = helpers.generateComparePhotosApiKey();
+        res.status(200).send({
+            success: true,
+            apiKey: apiKey,
+        });
+      } catch (e) {
+        res.status(500).send({
+          success: false,
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        });
+      }
+
+
+
+}
