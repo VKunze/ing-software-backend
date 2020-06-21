@@ -32,7 +32,6 @@ exports.save = async (datosSolicitude) => {
             personAddress: datosSolicitude.direccion,
             personSalary: datosSolicitude.sueldo,
             personDeliveryAddress: datosSolicitude.direccionEntrega,
-            comment: datosSolicitude.comment
         };
 
         for (key in solicitudeBdd) {
@@ -46,7 +45,7 @@ exports.save = async (datosSolicitude) => {
             return data;
         });
         var stateId = processRiskPorcentage.processRiskPorcentage(solicitudeBdd.productId, solicitudeBdd.personCedula, solicitudeBdd.personSalary);
-        this.updateState(createdInstance.id, stateId, comment);
+        this.updateState(createdInstance.id, stateId, null);
         return stateId;
     } catch (err) {
         console.log(err);
@@ -98,12 +97,17 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
 
 exports.getAllPendingApplications = () => {
     return Solicitude.findAll({
-        include: [{
-            model: State,
-            where: {
-                name: "Esperando aprobacion"
+        include: [
+            {
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            },
+            {
+                model: Product,
             }
-        }]
+        ]
     }).then((data) => {
         // console.log(data);
         return data;
@@ -120,12 +124,9 @@ exports.updateState = async (idSolicitude, newState, comment) => {
                 name: newState
             }
         });
-        await solicitude.update(
-            {comment}, 
-            {
-                where: {id: idSolicitude}
-            })
-        //console.log(state);
+        if (comment) {
+            await solicitude.update({comment}, { where: {id: idSolicitude}})
+        }
         if (solicitude === null || state === null) {
             return "Invalid solicitude ID/ state";
         }
