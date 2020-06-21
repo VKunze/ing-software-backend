@@ -1,34 +1,45 @@
 const applicationsService = require("../../api/applications/applications.service.js");
-const printSystem = require("./printSystemSimulation.js");
+const printSystemSimulation = require("./printSystemSimulation");
 const db = require("../../db/models/index.js");
 const notifications = require("../../utils/notifications.js");
-
-async function sendSolicitudesAprobadas() {
-  var solicitudesAprobadas = await getSolicitudesAprobadas();
-  printSystem.receiveSolicitudes(solicitudesAprobadas);
-}
-
 const Solicitude = db.solicitude;
+const Op = db.Sequelize.Op;
+const moment = require('moment'); // require
 
 async function getSolicitudesAprobadas() {
   const stateId = await applicationsService.getIdState("Aprobada");
   return Solicitude.findAll({
-    where: { stateId },
-  })
-    .then((data) => {
-      return data;
+      where: { 
+        stateId,
+        createdAt: {
+          [Op.and]: {
+            [Op.gte]: moment().utc().startOf('day').toDate(),
+            [Op.lte]: moment().utc().endOf('day').toDate(),
+          }
+        }
+      }
     })
-    .catch((err) => {  throw err;});
+    .then((data) => {return data;})
+    .catch((err) => {throw err;});
 }
 
-function getReadyCards() {
+async function sendSolicitudesAprobadas() {
+  var solicitudesAprobadas = await getSolicitudesAprobadas();
+  // printSystemSimulation.receiveSolicitudes(solicitudesAprobadas);
+  getReadyCards(solicitudesAprobadas)
+}
+
+var getReadyCards = async function (solicitudes) {
   var cedulas = [];
-  var solicitudes = printSystem.sendCardsList(); // array de objetos solicitud
+  // var solicitudes = printSystem.sendCardsList(); // array de objetos solicitud
   for (let solicitude in solicitudes) {
     const ci = solicitudes[solicitude].personCedula;
     cedulas.push(ci);
   }
-  notifications.sendPushNotificationToAppliants(cedulas);
+  cedulas = cedulas.filter(function(item, pos, self) {
+    return self.indexOf(item) == pos;
+  });
+  notifications.sendPushNotificationToReadyCardOwners(cedulas);
 }
 
 // function updateClock() {

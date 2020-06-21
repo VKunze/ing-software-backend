@@ -1,14 +1,13 @@
-const printSystemC = require("./printSystemCommunication.js");
-var list;
+const printSystemCommunication = require("./printSystemCommunication.js");
 
-function sendCardsList() {
-  printSystemC.getReadyCards();
-  return list;
-}
+// var sendCardsList = function (solicitudes) {
+//   printSystemCommunication.getReadyCards(solicitudes);
+//   // return solicitudes;
+// }
 
 function receiveSolicitudes(solicitudes) {
-  list = solicitudes;
-  setTimeout(sendCardsList, 10000);
+  // list = solicitudes;
+  setTimeout(printSystemCommunication.getReadyCards(solicitudes), 10000);
 }
 
-module.exports = { receiveSolicitudes, sendCardsList };
+module.exports = { receiveSolicitudes};

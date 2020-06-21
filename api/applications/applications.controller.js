@@ -15,13 +15,13 @@ exports.generateApplication = async (req, res) => {
             });
         }
         const respuesta = await applicationsService.save(solicitudeJson);
-        console.log("respuesta:", respuesta);
-        if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
-            var message = respuesta.includes("product") ? "Product" : "Data";
+        //console.log("respuesta:", respuesta);
+        if (typeof respuesta == "string" && (respuesta.includes("Invalid") || respuesta.includes("Incomplete"))) {
+            var message = respuesta.includes("product") ? "Invalid Product" : "Incomplete Data";
             return res.status(400).send({
                 success: false,
                 code: "BAD_REQUEST",
-                message: "Invalid " + message,
+                message: message,
             });
         } else {
             notificationHelper.sendPushNotificationToAdmins().catch((e) => {
@@ -129,7 +129,6 @@ exports.updateState = async (req, res) => {
         notificationHelper.sendPushNotificationToAppliants([ci]).catch((e) => {
             console.log(e);
         });
-
         if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
             res.status(400).send({
                 success: false,

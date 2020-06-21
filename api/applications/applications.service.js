@@ -24,6 +24,7 @@ exports.save = async (datosSolicitude) => {
         return "Invalid product or state";
     }
     try {
+        const urlSalaryPhoto = await cloudinaryHelper.uploadImage(`${datosSolicitude.cedula}_salary_photo`, datosSolicitude.comprobanteSueldo);
         const solicitudeBdd = {
             productId: productId,
             personFirstName: datosSolicitude.nombre,
@@ -32,14 +33,13 @@ exports.save = async (datosSolicitude) => {
             personAddress: datosSolicitude.direccion,
             personSalary: datosSolicitude.sueldo,
             personDeliveryAddress: datosSolicitude.direccionEntrega,
+            personSalaryPhoto: urlSalaryPhoto.url
         };
-
         for (key in solicitudeBdd) {
             if (solicitudeBdd[key] == undefined) {
-                return "Invalid data";
+                return "Incomplete data";
             }
         }
-        console.log(solicitudeBdd);
         //Create a solicitude in db
         var createdInstance = await Solicitude.create(solicitudeBdd).then((data) => {
             return data;
@@ -109,7 +109,6 @@ exports.getAllPendingApplications = () => {
             }
         ]
     }).then((data) => {
-        // console.log(data);
         return data;
     });
 }
@@ -138,12 +137,7 @@ exports.updateState = async (idSolicitude, newState, comment) => {
 }
 
 function getProductId(nombreProducto) {
-    //console.log(nombreProducto);
-    return Product.findOne({
-            where: {
-                name: nombreProducto
-            }
-        })
+    return Product.findOne({ where: { name: nombreProducto } })
         .then((data) => {
             return data.id;
         })
