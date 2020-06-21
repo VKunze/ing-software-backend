@@ -24,6 +24,7 @@ exports.save = async (datosSolicitude) => {
         return "Invalid product or state";
     }
     try {
+        const urlSalaryPhoto = await cloudinaryHelper.uploadImage(`${userId}_salary_photo`, datosSolicitude.comprobanteSueldo);
         const solicitudeBdd = {
             productId: productId,
             personFirstName: datosSolicitude.nombre,
@@ -32,7 +33,7 @@ exports.save = async (datosSolicitude) => {
             personAddress: datosSolicitude.direccion,
             personSalary: datosSolicitude.sueldo,
             personDeliveryAddress: datosSolicitude.direccionEntrega,
-            personSalaryPhoto: datosSolicitude.comprobanteSueldo
+            personSalaryPhoto: urlSalaryPhoto
         };
 
         for (key in solicitudeBdd) {

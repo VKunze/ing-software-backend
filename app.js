@@ -28,9 +28,10 @@ db.sequelize.sync({
 app.use("", apiRoutes);
 
 try {
-  cron.schedule("0 20 * * *", () => {
-    printSystem.sendSolicitudesAprobadas();
-  });
+  console.log("CRON STARTED");
+  // cron.schedule("* * * * *", () => {
+  //   printSystem.sendSolicitudesAprobadas();
+  // });
 } catch (error) {
   console.log(error);
 }
