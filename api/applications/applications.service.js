@@ -119,12 +119,9 @@ exports.updateState = async (idSolicitude, newState, comment) => {
                 name: newState
             }
         });
-        await solicitude.update(
-            {comment}, 
-            {
-                where: {id: idSolicitude}
-            })
-        //console.log(state);
+        if (comment) {
+            await solicitude.update({comment}, { where: {id: idSolicitude}})
+        }
         if (solicitude === null || state === null) {
             return "Invalid solicitude ID/ state";
         }
