@@ -32,7 +32,6 @@ exports.save = async (datosSolicitude) => {
             personAddress: datosSolicitude.direccion,
             personSalary: datosSolicitude.sueldo,
             personDeliveryAddress: datosSolicitude.direccionEntrega,
-            comment: datosSolicitude.comment
         };
 
         for (key in solicitudeBdd) {
