@@ -97,12 +97,17 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
 
 exports.getAllPendingApplications = () => {
     return Solicitude.findAll({
-        include: [{
-            model: State,
-            where: {
-                name: "Esperando aprobacion"
+        include: [
+            {
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            },
+            {
+                model: Product,
             }
-        }]
+        ]
     }).then((data) => {
         // console.log(data);
         return data;
