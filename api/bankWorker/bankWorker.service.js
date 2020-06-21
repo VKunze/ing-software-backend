@@ -6,7 +6,11 @@ const Op = db.Sequelize.Op;
 // Find a single username and password
 exports.findOne = async (username) => {
   // const passwordHasheada = await hashpassword(password);
-  return BankWorker.findOne({ where: { username } })
+  return BankWorker.findOne({
+      where: {
+        username
+      }
+    })
     .then((data) => {
       return data;
     })
@@ -20,7 +24,10 @@ exports.create = async (username, password) => {
     if (err) {
       throw err;
     }
-    return BankWorker.create({ username: username, password: hash })
+    return BankWorker.create({
+        username: username,
+        password: hash
+      })
       .then((data) => {
         return data;
       })
@@ -43,7 +50,11 @@ exports.saveToken = async (token, id) => {
 
 exports.findByToken = async (token) => {
 
-  return BankWorker.findOne({ where: { token } })
+  return BankWorker.findOne({
+      where: {
+        token
+      }
+    })
     .then((data) => {
       return data;
     })

@@ -1,4 +1,9 @@
-const { spawn } = require("child_process");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
+const {
+    spawn
+} = require("child_process");
 var base64Img = require("base64-img");
 const db = require("../../db/models/index.js");
 const cloudinaryHelper = require("./../../utils/cloudinary");
@@ -10,7 +15,7 @@ const Product = db.product;
 const State = db.state;
 
 exports.save = async (datosSolicitude) => {
-    printSystem.startClock();
+    // printSystem.startClock();
     var productId = "";
     var stateId = "";
     try {
@@ -40,7 +45,7 @@ exports.save = async (datosSolicitude) => {
             return data;
         });
         var stateId = processRiskPorcentage.processRiskPorcentage(solicitudeBdd.productId, solicitudeBdd.personCedula, solicitudeBdd.personSalary);
-        this.updateState(createdInstance.id, stateId);
+        this.updateState(createdInstance.id, stateId, null);
         return stateId;
     } catch (err) {
         console.log(err);
@@ -92,21 +97,35 @@ exports.compareFotos = async (userId, base64Ci, base64User) => {
 
 exports.getAllPendingApplications = () => {
     return Solicitude.findAll({
-        include: [{
-            model: State,
-            where: {
-                name: "Esperando aprobacion"
+        include: [
+            {
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            },
+            {
+                model: Product,
             }
-        }]
+        ]
     }).then((data) => {
         return data;
     });
 }
 
-exports.updateState = async (idSolicitude, newState) => {
+exports.updateState = async (idSolicitude, newState, comment) => {
     try {
         var solicitude = await Solicitude.findByPk(idSolicitude);
-        var state = await State.findOne({ where: { name: newState } });
+        //console.log(solicitude);
+        //console.log("new state: ", newState);
+        var state = await State.findOne({
+            where: {
+                name: newState
+            }
+        });
+        if (comment) {
+            await solicitude.update({comment}, { where: {id: idSolicitude}})
+        }
         if (solicitude === null || state === null) {
             return "Invalid solicitude ID/ state";
         }
@@ -127,8 +146,27 @@ function getProductId(nombreProducto) {
         });
 }
 
+exports.getProductById = (productId) => {
+    //console.log(nombreProducto);
+    return Product.findOne({
+            where: {
+                id: productId
+            }
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((err) => {
+            throw (err);
+        });
+}
+
 function getIdInicialState() {
-    return State.findOne({ where: { name: "Esperando aprobacion" } })
+    return State.findOne({
+            where: {
+                name: "Esperando aprobacion"
+            }
+        })
         .then((data) => {
             return data.id;
         })
@@ -138,7 +176,11 @@ function getIdInicialState() {
 }
 
 exports.getIdState = (nombre) => {
-    return State.findOne({ where: { name: nombre } })
+    return State.findOne({
+            where: {
+                name: nombre
+            }
+        })
         .then((data) => {
             return data.id;
         })
@@ -149,7 +191,11 @@ exports.getIdState = (nombre) => {
 }
 
 function getNameState(id) {
-    return State.findOne({ where: { id: id } })
+    return State.findOne({
+            where: {
+                id: id
+            }
+        })
         .then((data) => {
             return data.nombre;
         })
@@ -158,8 +204,12 @@ function getNameState(id) {
         });
 }
 
-function getCedula(id) {
-    return Solicitude.findOne({ where: { id: id } })
+exports.getCedula = (id) => {
+    return Solicitude.findOne({
+            where: {
+                id: id
+            }
+        })
         .then((data) => {
             return data.personCedula;
         })
@@ -168,4 +218,77 @@ function getCedula(id) {
         });
 }
 
-exports = getNameState, getCedula;
+exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
+    if(clientFirstName && clientLastName){
+        return Solicitude.findAll({    
+            where: {
+                personFirstName: {
+                    [Op.like]: '%' + clientFirstName + '%'
+                },
+                personLastName: {
+                    [Op.like]: '%' + clientLastName + '%'
+                },
+            },
+            include: [{
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            }]
+        }).then((data) => {
+            console.log(data);
+            return data;
+        });
+    }  else if (clientFirstName && !clientLastName){
+        return Solicitude.findAll({    
+            where: {
+                personFirstName: {
+                    [Op.like]: '%' + clientFirstName + '%'
+                }
+            },
+            include: [{
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            }]
+        }).then((data) => {
+            console.log(data);
+            return data;
+        });
+    } else if (!clientFirstName && clientLastName){
+        return Solicitude.findAll({    
+            where: {
+                personLastName: {
+                    [Op.like]: '%' + clientLastName + '%'
+                }
+            },
+            include: [{
+                model: State,
+                where: {
+                    name: "Esperando aprobacion"
+                }
+            }]
+        }).then((data) => {
+            console.log(data);
+            return data;
+        });
+    }
+}
+
+exports.getAllApprovedApplications = () => {
+    return Solicitude.findAll({
+        include: [{
+            model: State,
+            where: {
+                name: "Aprobada"
+            }
+        }]
+    }).then((data) => {
+        // console.log(data);
+        return data;
+    });
+}
+
+
+exports = getNameState;

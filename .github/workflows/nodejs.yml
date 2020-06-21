@@ -34,4 +34,5 @@ jobs:
         DB_PORT: ${{secrets.DB_PORT}}
         DB_USER: ${{secrets.DB_USER}}
         DB_DIALECT: ${{secrets.DB_DIALECT}}
+        SECRET_KEY: ${{secrets.SECRET_KEY}} 
       run: npm test
