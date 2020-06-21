@@ -45,7 +45,7 @@ exports.save = async (datosSolicitude) => {
             return data;
         });
         var stateId = processRiskPorcentage.processRiskPorcentage(solicitudeBdd.productId, solicitudeBdd.personCedula, solicitudeBdd.personSalary);
-        this.updateState(createdInstance.id, stateId, comment);
+        this.updateState(createdInstance.id, stateId, null);
         return stateId;
     } catch (err) {
         console.log(err);
