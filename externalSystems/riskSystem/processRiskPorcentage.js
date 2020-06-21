@@ -14,7 +14,7 @@ function processRiskPorcentage(product, document, salary) {
 function riskSystem(product, document, salary) {
     console.log(document);
     var riskPorcentage;
-    if (document.charAt(0) == 4) {
+    if (document.charAt(0) < 5) {
         riskPorcentage = 30;
     } else if (document.charAt(0) == 5) {
         riskPorcentage = 50;
