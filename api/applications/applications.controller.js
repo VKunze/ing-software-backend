@@ -129,7 +129,6 @@ exports.updateState = async (req, res) => {
         notificationHelper.sendPushNotificationToAppliants([ci]).catch((e) => {
             console.log(e);
         });
-
         if (typeof respuesta == "string" && respuesta.includes("Invalid")) {
             res.status(400).send({
                 success: false,

@@ -3,10 +3,22 @@ const printSystemSimulation = require("./printSystemSimulation");
 const db = require("../../db/models/index.js");
 const notifications = require("../../utils/notifications.js");
 const Solicitude = db.solicitude;
+const Op = db.Sequelize.Op;
+const moment = require('moment'); // require
 
 async function getSolicitudesAprobadas() {
   const stateId = await applicationsService.getIdState("Aprobada");
-  return Solicitude.findAll({where: { stateId }})
+  return Solicitude.findAll({
+      where: { 
+        stateId,
+        createdAt: {
+          [Op.and]: {
+            [Op.gte]: moment().utc().startOf('day').toDate(),
+            [Op.lte]: moment().utc().endOf('day').toDate(),
+          }
+        }
+      }
+    })
     .then((data) => {return data;})
     .catch((err) => {throw err;});
 }
@@ -27,7 +39,7 @@ var getReadyCards = async function (solicitudes) {
   cedulas = cedulas.filter(function(item, pos, self) {
     return self.indexOf(item) == pos;
   });
-  notifications.sendPushNotificationToAppliants(cedulas);
+  notifications.sendPushNotificationToReadyCardOwners(cedulas);
 }
 
 // function updateClock() {

@@ -30,3 +30,16 @@ exports.sendPushNotificationToAppliants = async (appliantCis) => {
     throw e;
   }
 };
+
+exports.sendPushNotificationToReadyCardOwners = async (appliantCis) => {
+  const notification = {
+    include_external_user_ids: appliantCis,
+    contents: { en: "Su tarjeta está lista para ser enviada." },
+  };
+  try {
+    await client.createNotification(notification);
+    console.log("sent!");
+  } catch (e) {
+    throw e;
+  }
+};

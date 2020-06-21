@@ -29,9 +29,9 @@ app.use("", apiRoutes);
 
 try {
   console.log("CRON STARTED");
-  // cron.schedule("* * * * *", () => {
-  //   printSystem.sendSolicitudesAprobadas();
-  // });
+  cron.schedule("0 23 * * *", () => {
+    printSystem.sendSolicitudesAprobadas();
+  });
 } catch (error) {
   console.log(error);
 }

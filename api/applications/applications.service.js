@@ -35,7 +35,6 @@ exports.save = async (datosSolicitude) => {
             personDeliveryAddress: datosSolicitude.direccionEntrega,
             personSalaryPhoto: urlSalaryPhoto.url
         };
-
         for (key in solicitudeBdd) {
             if (solicitudeBdd[key] == undefined) {
                 return "Incomplete data";
