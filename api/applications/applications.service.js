@@ -326,7 +326,7 @@ exports.getAllApplications = () => {
     });
 }
 
-exports.getApplicationsByName = (clientFirstName, clientLastName) => {
+exports.getAllApplicationsByName = (clientFirstName, clientLastName) => {
     if(clientFirstName && clientLastName){
         return Solicitude.findAll({
           where: {

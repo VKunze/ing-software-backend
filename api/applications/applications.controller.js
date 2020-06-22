@@ -162,7 +162,7 @@ exports.getPendingApplicationsByName = async (req, res) => {
                 message: "Ingrese nombre y/o apellido",
             });
         }
-        const appsByName = await applicationsService.getPendingApplicationsByName(clientFirstName, clientLastName, state);
+        const appsByName = await applicationsService.getApplicationsByName(clientFirstName, clientLastName, state);
         res.status(200).send({
             success: true,
             applicationsByName: appsByName,
