@@ -245,38 +245,48 @@ exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
           return data;
         });
     }  else if (clientFirstName && !clientLastName){
-        return Solicitude.findAll({    
-            where: {
-                personFirstName: {
-                    [Op.like]: '%' + clientFirstName + '%'
-                }
+        return Solicitude.findAll({
+          where: {
+            personFirstName: {
+              [Op.like]: "%" + clientFirstName + "%",
             },
-            include: [{
-                model: State,
-                where: {
-                    name: "Esperando aprobacion"
-                }
-            }]
+          },
+          include: [
+            {
+              model: State,
+              where: {
+                name: "Esperando aprobacion",
+              },
+            },
+            {
+              model: Product,
+            },
+          ],
         }).then((data) => {
-            console.log(data);
-            return data;
+          console.log(data);
+          return data;
         });
     } else if (!clientFirstName && clientLastName){
-        return Solicitude.findAll({    
-            where: {
-                personLastName: {
-                    [Op.like]: '%' + clientLastName + '%'
-                }
+        return Solicitude.findAll({
+          where: {
+            personLastName: {
+              [Op.like]: "%" + clientLastName + "%",
             },
-            include: [{
-                model: State,
-                where: {
-                    name: "Esperando aprobacion"
-                }
-            }]
+          },
+          include: [
+            {
+              model: State,
+              where: {
+                name: "Esperando aprobacion",
+              },
+            },
+            {
+              model: Product,
+            },
+          ],
         }).then((data) => {
-            console.log(data);
-            return data;
+          console.log(data);
+          return data;
         });
     }
 }
