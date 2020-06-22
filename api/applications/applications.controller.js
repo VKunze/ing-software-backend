@@ -154,6 +154,7 @@ exports.getPendingApplicationsByName = async (req, res) => {
     try {
         const clientFirstName = req.query.clientFirstName
         const clientLastName = req.query.clientLastName
+        const state = "Esperando aprobacion"
         if (!clientFirstName && !clientLastName) {
             res.status(400).send({
                 success: false,
@@ -161,13 +162,7 @@ exports.getPendingApplicationsByName = async (req, res) => {
                 message: "Ingrese nombre y/o apellido",
             });
         }
-        // if (!clientFirstName) {
-        //     clientFirstName = " "
-        // }
-        // if (!clientLastName) {
-        //     clientLastName = " "
-        // }
-        const appsByName = await applicationsService.getPendingApplicationsByName(clientFirstName, clientLastName);
+        const appsByName = await applicationsService.getPendingApplicationsByName(clientFirstName, clientLastName, state);
         res.status(200).send({
             success: true,
             applicationsByName: appsByName,
@@ -256,6 +251,63 @@ exports.getAllApplications = async (req, res) => {
             success: false,
             code: "INTERNAL_SERVER_ERROR",
             message: "Ha ocurrido un error inesperado, intente de nuevo mas tarde!",
+        });
+    }
+};
+
+exports.getApprovedApplicationsByName = async (req, res) => {
+    try {
+        const clientFirstName = req.query.clientFirstName
+        const clientLastName = req.query.clientLastName
+        const state = "Aprobada"
+        if (!clientFirstName && !clientLastName) {
+            res.status(400).send({
+                success: false,
+                code: "BAD_REQUEST",
+                message: "Ingrese nombre y/o apellido",
+            });
+        }
+        const appsByName = await applicationsService.getApplicationsByName(clientFirstName, clientLastName, state);
+        res.status(200).send({
+            success: true,
+            applicationsByName: appsByName,
+            message: "Apps by name"
+        });
+
+    } catch (e) {
+        console.log(e);
+        res.status(404).send({
+            success: false,
+            code: "NOT_FOUND",
+            message: "No se ha encontrado ninguna solicitud que corresponda a esa persona.",
+        });
+    }
+};
+
+exports.getAllApplicationsByName = async (req, res) => {
+    try {
+        const clientFirstName = req.query.clientFirstName
+        const clientLastName = req.query.clientLastName
+        if (!clientFirstName && !clientLastName) {
+            res.status(400).send({
+                success: false,
+                code: "BAD_REQUEST",
+                message: "Ingrese nombre y/o apellido",
+            });
+        }
+        const appsByName = await applicationsService.getAllApplicationsByName(clientFirstName, clientLastName);
+        res.status(200).send({
+            success: true,
+            applicationsByName: appsByName,
+            message: "Apps by name"
+        });
+
+    } catch (e) {
+        console.log(e);
+        res.status(404).send({
+            success: false,
+            code: "NOT_FOUND",
+            message: "No se ha encontrado ninguna solicitud que corresponda a esa persona.",
         });
     }
 };

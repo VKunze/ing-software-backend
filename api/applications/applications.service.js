@@ -218,7 +218,7 @@ exports.getCedula = (id) => {
         });
 }
 
-exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
+exports.getApplicationsByName = (clientFirstName, clientLastName, estado) => {
     if(clientFirstName && clientLastName){
         return Solicitude.findAll({
           where: {
@@ -233,7 +233,7 @@ exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
             {
               model: State,
               where: {
-                name: "Esperando aprobacion",
+                name: estado,
               },
             },
             {
@@ -255,7 +255,7 @@ exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
             {
               model: State,
               where: {
-                name: "Esperando aprobacion",
+                name: estado,
               },
             },
             {
@@ -277,7 +277,7 @@ exports.getPendingApplicationsByName = (clientFirstName, clientLastName) => {
             {
               model: State,
               where: {
-                name: "Esperando aprobacion",
+                name: estado,
               },
             },
             {
@@ -326,6 +326,68 @@ exports.getAllApplications = () => {
     });
 }
 
-
+exports.getApplicationsByName = (clientFirstName, clientLastName) => {
+    if(clientFirstName && clientLastName){
+        return Solicitude.findAll({
+          where: {
+            personFirstName: {
+              [Op.like]: "%" + clientFirstName + "%",
+            },
+            personLastName: {
+              [Op.like]: "%" + clientLastName + "%",
+            },
+          },
+          include: [
+            {
+              model: State,
+            },
+            {
+              model: Product,
+            },
+          ],
+        }).then((data) => {
+          console.log(data);
+          return data;
+        });
+    }  else if (clientFirstName && !clientLastName){
+        return Solicitude.findAll({
+          where: {
+            personFirstName: {
+              [Op.like]: "%" + clientFirstName + "%",
+            },
+          },
+          include: [
+            {
+              model: State,
+            },
+            {
+              model: Product,
+            },
+          ],
+        }).then((data) => {
+          console.log(data);
+          return data;
+        });
+    } else if (!clientFirstName && clientLastName){
+        return Solicitude.findAll({
+          where: {
+            personLastName: {
+              [Op.like]: "%" + clientLastName + "%",
+            },
+          },
+          include: [
+            {
+              model: State,
+            },
+            {
+              model: Product,
+            },
+          ],
+        }).then((data) => {
+          console.log(data);
+          return data;
+        });
+    }
+}
 
 exports = getNameState;
