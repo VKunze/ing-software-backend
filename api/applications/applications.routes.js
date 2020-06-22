@@ -10,7 +10,7 @@ applicationsRouter.get("/pending", middleware.authenticateToken, applications.ge
 applicationsRouter.post("/updateState", middleware.authenticateToken, applications.updateState);
 applicationsRouter.get("/pendingByName", middleware.authenticateToken, applications.getPendingApplicationsByName);
 applicationsRouter.get("/approvedByName", middleware.authenticateToken, applications.getApprovedApplicationsByName);
-applicationsRouter.get("/allByName", middleware.authenticateToken, applications.getAllApplicationsByName);
+applicationsRouter.get("/getAllApplicationsByName", middleware.authenticateToken, applications.getAllApplicationsByName);
 applicationsRouter.get("/approved", middleware.authenticateToken, applications.getAllApprovedApplications);
 applicationsRouter.get("/getProductById", middleware.authenticateToken, applications.getProductById);
 applicationsRouter.post("/proofOfLifeApproved", applications.proofOfLifeApproved);
